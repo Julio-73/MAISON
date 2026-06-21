@@ -60,7 +60,11 @@ npm run preview
 
 ## 📄 Licencia
 
-MIT — Úsalo libremente para tus proyectos.
+Hecho por ----- Julio Cesar Quispe Garrido\ Ingeniero de Sofware con IA.
+
+## Demo:
+
+maisonstyle.netlify.app.
 
 ---
 
