@@ -1,7 +1,8 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
 import { Plus, X, ShoppingBag } from "lucide-react";
-import { media } from "../config/media";
+import { media, srcSet } from "../config/media";
+import { useCartStore } from "../store/cartStore";
 
 interface Product {
   id: string; code: string; name: string; category: string;
@@ -16,12 +17,9 @@ const products: Product[] = [
 ];
 
 export default function Lookbook() {
-  const [cart, setCart] = useState<Product[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-
-  const addToCart = (p: Product) => setCart((c) => (c.find((x) => x.id === p.id) ? c : [...c, p]));
-  const removeFromCart = (id: string) => setCart((c) => c.filter((x) => x.id !== id));
-  const total = cart.reduce((s, p) => s + p.price, 0);
+  const addItem = useCartStore((state) => state.addItem);
 
   return (
     <section id="lookbook" className="relative bg-bone text-ink py-32 md:py-48">
@@ -45,9 +43,9 @@ export default function Lookbook() {
           {products.map((p, i) => (
             <motion.article key={p.id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.1 }} onMouseEnter={() => setHovered(p.id)} onMouseLeave={() => setHovered(null)} className="group" data-cursor-hover>
               <div className="relative aspect-[3/4] overflow-hidden bg-ink/5 mb-5">
-                <img src={p.img} alt={p.name} loading="lazy" className="zoom-img absolute inset-0 w-full h-full object-cover" />
+                <img src={p.img} alt={p.name} loading="lazy" srcSet={srcSet(p.img)} sizes="(max-width: 768px) 50vw, 25vw" className="zoom-img absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute top-3 left-3 text-[10px] tracking-[0.3em] uppercase text-bone bg-ink/60 backdrop-blur-sm px-3 py-1.5">{p.code}</div>
-                <motion.button onClick={() => addToCart(p)} initial={{ opacity: 0, y: 20 }} animate={{ opacity: hovered === p.id ? 1 : 0, y: hovered === p.id ? 0 : 20 }} className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label="Add to cart">
+                <motion.button onClick={() => addItem({ id: p.id, name: p.name, price: p.price, image: p.img })} initial={{ opacity: 0, y: 20 }} animate={{ opacity: hovered === p.id ? 1 : 0, y: hovered === p.id ? 0 : 20 }} className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label="Add to cart">
                   <Plus size={18} strokeWidth={1.5} />
                 </motion.button>
               </div>
@@ -65,40 +63,6 @@ export default function Lookbook() {
             </motion.article>
           ))}
         </div>
-
-        <AnimatePresence>
-          {cart.length > 0 && (
-            <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }} transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }} className="fixed bottom-6 left-6 right-6 md:left-auto md:right-8 md:bottom-8 md:w-96 z-40 bg-ink text-bone shadow-2xl shadow-ink/50">
-              <div className="p-6 border-b border-bone/15 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <ShoppingBag size={18} strokeWidth={1.4} className="text-clay" />
-                  <span className="font-display text-lg">Sus reservas ({cart.length})</span>
-                </div>
-                <button onClick={() => setCart([])} className="text-[10px] tracking-[0.3em] uppercase text-bone/60 hover:text-bone transition-colors" data-cursor-hover>Vaciar</button>
-              </div>
-              <div className="max-h-64 overflow-y-auto p-4 space-y-2">
-                {cart.map((p) => (
-                  <div key={p.id} className="flex items-center gap-3 p-2 hover:bg-bone/5 transition-colors">
-                    <img src={p.img} alt={p.name} className="w-12 h-12 object-cover" />
-                    <div className="flex-1 min-w-0">
-                      <div className="font-display text-sm truncate">{p.name}</div>
-                      <div className="text-[10px] tracking-[0.3em] uppercase text-clay">{p.code}</div>
-                    </div>
-                    <div className="text-xs font-display shrink-0">€{p.price.toLocaleString()}</div>
-                    <button onClick={() => removeFromCart(p.id)} className="text-bone/40 hover:text-clay transition-colors" data-cursor-hover aria-label="Remove"><X size={14} /></button>
-                  </div>
-                ))}
-              </div>
-              <div className="p-6 border-t border-bone/15">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">Total estimado</span>
-                  <span className="font-display text-2xl">€{total.toLocaleString()}</span>
-                </div>
-                <a href="#contact" className="btn-fill w-full inline-flex items-center justify-center gap-3 bg-bone text-ink px-6 py-4 text-[11px] tracking-[0.3em] uppercase" data-cursor-hover>Solicitar cita</a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );

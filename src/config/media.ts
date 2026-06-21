@@ -34,3 +34,15 @@ export const media = {
   heroVideoPoster:
     "https://images.pexels.com/videos/9512046/pexels-photo-9512046.jpeg?auto=compress&cs=tinysrgb&w=1920",
 };
+
+export function srcSet(url: string): string {
+  return [400, 800, 1200, 1600]
+    .map(w => `${url.replace(/w=\d+/, `w=${w}`)} ${w}w`)
+    .join(", ");
+}
+
+export function srcSetSmall(url: string): string {
+  return [200, 400, 800, 1200]
+    .map(w => `${url.replace(/w=\d+/, `w=${w}`)} ${w}w`)
+    .join(", ");
+}

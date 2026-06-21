@@ -1,23 +1,39 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Menu, X } from "lucide-react";
-
-const links = [
-  { label: "Colección", href: "#collection" },
-  { label: "Atelier", href: "#atelier" },
-  { label: "Proceso", href: "#process" },
-  { label: "Looks", href: "#looks" },
-  { label: "Boutiques", href: "#showrooms" },
-  { label: "Contacto", href: "#contact" },
-];
-
-const langs = ["FR", "EN", "IT", "ES", "JP"];
+import { Globe, Menu, X, ShoppingBag } from "lucide-react";
+import { useCartStore } from "../store/cartStore";
+import { t, setLanguage, getCurrentLang, subscribe, langs } from "../i18n";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState("FR");
+  const [lang, setLang] = useState(getCurrentLang());
   const [langOpen, setLangOpen] = useState(false);
+  const [, forceUpdate] = useState(0);
+  const { toggleCart, items } = useCartStore();
+  const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Subscribe to language changes to force re-render
+  useEffect(() => {
+    const unsub = subscribe(() => forceUpdate((n) => n + 1));
+    return unsub;
+  }, []);
+
+  const handleLangChange = (l: string) => {
+    setLang(l);
+    setLanguage(l);
+    setOpen(false);
+    setLangOpen(false);
+  };
+
+  const navLinks = [
+    { label: t("nav.collection"), href: "#collection" },
+    { label: t("nav.atelier"), href: "#atelier" },
+    { label: t("nav.process"), href: "#process" },
+    { label: t("nav.looks"), href: "#looks" },
+    { label: t("nav.boutiques"), href: "#showrooms" },
+    { label: t("nav.contact"), href: "#contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,60 +44,62 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        initial={{ y: -40, opacity: 0 }}
+        initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, delay: 2.6, ease: [0.77, 0, 0.175, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-          scrolled ? "backdrop-blur-xl bg-ink/80 border-b border-bone/10" : "bg-transparent"
+        transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? "bg-ink/90 backdrop-blur-md border-b border-bone/10" : ""
         }`}
       >
-        {/* ========================================================================= */}
-        {/* DESKTOP NAVBAR (Visible ONLY on screens >= 1024px / lg) */}
-        {/* ========================================================================= */}
-        <nav className="hidden lg:flex max-w-[1400px] mx-auto px-12 h-20 items-center justify-between">
-          <a href="#" className="flex items-center gap-3 group">
-            <span className="text-2xl font-display tracking-[0.3em] text-bone">MAISON</span>
-            <span className="w-12 h-px bg-clay group-hover:w-20 transition-all duration-700" />
-            <span className="text-[10px] tracking-[0.4em] text-clay uppercase">Est. 1987</span>
+        {/* ===== DESKTOP NAVBAR (lg+) ===== */}
+        <nav className="hidden lg:flex w-full h-20 px-12 items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-3" data-cursor-hover>
+            <span className="text-xl font-display tracking-[0.3em] text-bone">MAISON</span>
           </a>
 
-          <ul className="flex items-center gap-10">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} className="link-line text-xs tracking-[0.25em] uppercase text-bone/80 hover:text-bone transition-colors">
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex items-center gap-5">
-            <div className="relative">
-              <button
-                onClick={() => setLangOpen(!langOpen)}
-                onBlur={() => setTimeout(() => setLangOpen(false), 150)}
-                className="flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-bone/70 hover:text-bone transition-colors px-2 py-2"
+          {/* Center links */}
+          <div className="flex items-center gap-10">
+            {navLinks.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-[11px] tracking-[0.3em] uppercase text-bone/70 hover:text-bone transition-colors"
                 data-cursor-hover
               >
-                <Globe size={13} strokeWidth={1.4} />
+                {l.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Right actions */}
+          <div className="flex items-center gap-6">
+            {/* Language picker */}
+            <div className="relative">
+              <button
+                onClick={() => setLangOpen((v) => !v)}
+                className="flex items-center gap-2 text-bone/60 hover:text-bone transition-colors text-[11px] tracking-[0.2em]"
+                data-cursor-hover
+              >
+                <Globe size={14} strokeWidth={1.5} />
                 {lang}
               </button>
               <AnimatePresence>
                 {langOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full right-0 mt-2 bg-ink border border-bone/15 backdrop-blur-xl min-w-[80px]"
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-8 right-0 bg-ink border border-bone/10 py-2 min-w-[80px] shadow-xl z-50"
                   >
                     {langs.map((l) => (
                       <button
                         key={l}
-                        onClick={() => { setLang(l); setLangOpen(false); }}
-                        className={`block w-full text-left px-4 py-2 text-[10px] tracking-[0.3em] uppercase transition-colors ${
-                          lang === l ? "text-clay" : "text-bone/70 hover:text-bone"
+                        onClick={() => handleLangChange(l)}
+                        className={`w-full text-left px-4 py-2 text-[11px] tracking-[0.2em] uppercase transition-colors ${
+                          lang === l ? "text-clay" : "text-bone/60 hover:text-bone"
                         }`}
-                        data-cursor-hover
                       >
                         {l}
                       </button>
@@ -91,105 +109,119 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            <a href="#contact" className="inline-flex items-center btn-fill border border-bone/40 px-6 py-3 text-[11px] tracking-[0.3em] uppercase text-bone transition-colors" data-cursor-hover>
-              Reservar
+            {/* Cart */}
+            <button
+              onClick={toggleCart}
+              className="relative flex items-center p-2 text-bone/70 hover:text-bone transition-colors"
+              data-cursor-hover
+            >
+              <ShoppingBag size={18} strokeWidth={1.4} />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-clay text-ink text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            <a
+              href="#contact"
+              className="inline-flex items-center border border-bone/40 px-6 py-3 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors"
+              data-cursor-hover
+            >
+              {t("nav.reserve")}
             </a>
           </div>
         </nav>
 
-        {/* ========================================================================= */}
-        {/* MOBILE & TABLET NAVBAR (Visible ONLY on screens < 1024px) */}
-        {/* ========================================================================= */}
+        {/* ===== MOBILE NAVBAR (< lg) ===== */}
         <nav className="lg:hidden w-full h-20 px-6 flex items-center justify-between">
           <a href="#" className="flex items-center gap-3">
             <span className="text-xl font-display tracking-[0.3em] text-bone">MAISON</span>
           </a>
 
-          <button
-            onClick={() => setOpen(true)}
-            className="p-2 text-bone flex items-center justify-center bg-transparent border-none outline-none cursor-pointer hover:text-clay transition-colors z-[60]"
-            aria-label="Open menu"
-            data-cursor-hover
-          >
-            <Menu size={28} strokeWidth={1.5} />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleCart}
+              className="relative p-2 text-bone"
+              aria-label="Open cart"
+            >
+              <ShoppingBag size={24} strokeWidth={1.5} />
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-0 w-4 h-4 bg-clay text-ink text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setOpen(true)}
+              className="p-2 text-bone"
+              aria-label="Open menu"
+            >
+              <Menu size={28} strokeWidth={1.5} />
+            </button>
+          </div>
         </nav>
       </motion.header>
 
-      {/* ========================================================================= */}
-      {/* MOBILE MENU OVERLAY PANEL */}
-      {/* ========================================================================= */}
+      {/* ===== MOBILE MENU OVERLAY ===== */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-[60] bg-ink flex flex-col justify-between"
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-[70] bg-ink flex flex-col"
           >
-            <div className="flex flex-col h-full">
-              {/* Header inside overlay */}
-              <div className="flex items-center justify-between px-6 h-20 shrink-0">
-                <span className="text-xl font-display tracking-[0.3em] text-bone">MAISON</span>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="p-2 text-bone flex items-center justify-center bg-transparent border-none outline-none cursor-pointer hover:text-clay transition-colors"
-                  aria-label="Close menu"
-                  data-cursor-hover
-                >
-                  <X size={28} strokeWidth={1.5} />
-                </button>
-              </div>
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 h-20 shrink-0 border-b border-bone/10">
+              <span className="text-xl font-display tracking-[0.3em] text-bone">MAISON</span>
+              <button onClick={() => setOpen(false)} className="p-2 text-bone" aria-label="Close menu">
+                <X size={28} strokeWidth={1.5} />
+              </button>
+            </div>
 
-              {/* Navigation Links */}
-              <div className="flex-1 flex items-center justify-center">
-                <motion.ul
-                  initial="hidden"
-                  animate="visible"
-                  variants={{
-                    hidden: {},
-                    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } }
-                  }}
-                  className="flex flex-col items-center gap-8 w-full"
-                >
-                  {links.map((l) => (
-                    <motion.li
-                      key={l.href}
-                      variants={{
-                        hidden: { opacity: 0, y: 30 },
-                        visible: { opacity: 1, y: 0 }
-                      }}
-                      transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
+            {/* Links */}
+            <div className="flex-1 flex items-center justify-center">
+              <motion.ul
+                initial="hidden"
+                animate="visible"
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } } }}
+                className="flex flex-col items-center gap-8 w-full px-6"
+              >
+                {navLinks.map((l) => (
+                  <motion.li
+                    key={l.href}
+                    variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+                    transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
+                  >
+                    <a
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      className="text-5xl sm:text-6xl font-display tracking-widest text-bone hover:text-clay transition-colors uppercase text-center block"
                     >
-                      <a
-                        href={l.href}
-                        onClick={() => setOpen(false)}
-                        className="text-5xl sm:text-6xl font-display tracking-widest text-bone hover:text-clay transition-colors uppercase text-center block w-full"
-                      >
-                        {l.label}
-                      </a>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </div>
+                      {l.label}
+                    </a>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </div>
 
-              {/* Bottom Languages list in overlay */}
-              <div className="px-8 pb-12 shrink-0 flex flex-col items-center">
-                <div className="text-[10px] tracking-[0.4em] uppercase text-bone/40 mb-4">Idioma</div>
-                <div className="flex gap-6">
-                  {langs.map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => { setLang(l); setOpen(false); }}
-                      className={`text-[11px] tracking-[0.3em] uppercase font-display transition-colors ${
-                        lang === l ? "text-clay" : "text-bone/50 hover:text-bone"
-                      }`}
-                    >
-                      {l}
-                    </button>
-                  ))}
-                </div>
+            {/* Language selector */}
+            <div className="px-8 pb-12 shrink-0 flex flex-col items-center border-t border-bone/10 pt-8">
+              <div className="text-[10px] tracking-[0.4em] uppercase text-bone/40 mb-4">Idioma</div>
+              <div className="flex gap-6">
+                {langs.map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => handleLangChange(l)}
+                    className={`text-[11px] tracking-[0.3em] uppercase font-display transition-colors ${
+                      lang === l ? "text-clay" : "text-bone/50 hover:text-bone"
+                    }`}
+                  >
+                    {l}
+                  </button>
+                ))}
               </div>
             </div>
           </motion.div>

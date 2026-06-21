@@ -15,7 +15,7 @@ const pillars = [
 
 export default function Atelier() {
   return (
-    <section id="atelier" className="relative bg-bone text-ink py-32 md:py-48 overflow-hidden">
+    <section id="atelier" className="relative bg-bone text-ink py-32 md:py-48 overflow-hidden border-t border-ink/5">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
           <div className="lg:sticky lg:top-32">

@@ -1,48 +1,56 @@
+import { lazy, Suspense } from "react";
+import SmoothScroll from "./components/SmoothScroll";
 import Cursor from "./components/Cursor";
+import ScrollProgress from "./components/ScrollProgress";
+import Loader from "./components/Loader";
+import CartDrawer from "./components/CartDrawer";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
-import Collection from "./components/Collection";
-import LiveStats from "./components/LiveStats";
-import Atelier from "./components/Atelier";
-import Process from "./components/Process";
-import Marquee2 from "./components/Marquee2";
-import Looks from "./components/Looks";
-import Lookbook from "./components/Lookbook";
-import Showrooms from "./components/Showrooms";
-import Manifesto from "./components/Manifesto";
-import Testimonials from "./components/Testimonials";
-import Newsletter from "./components/Newsletter";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import SmoothScroll from "./components/SmoothScroll";
-import ScrollProgress from "./components/ScrollProgress";
+
+const Marquee = lazy(() => import("./components/Marquee"));
+const Collection = lazy(() => import("./components/Collection"));
+const Lookbook = lazy(() => import("./components/Lookbook"));
+const Looks = lazy(() => import("./components/Looks"));
+const Atelier = lazy(() => import("./components/Atelier"));
+const Process = lazy(() => import("./components/Process"));
+const Manifesto = lazy(() => import("./components/Manifesto"));
+const Testimonials = lazy(() => import("./components/Testimonials"));
+const LiveStats = lazy(() => import("./components/LiveStats"));
+const Marquee2 = lazy(() => import("./components/Marquee2"));
+const Showrooms = lazy(() => import("./components/Showrooms"));
+const Contact = lazy(() => import("./components/Contact"));
+const Newsletter = lazy(() => import("./components/Newsletter"));
+const Footer = lazy(() => import("./components/Footer"));
 
 export default function App() {
   return (
-    <div className="grain bg-ink min-h-screen text-bone antialiased overflow-x-hidden w-full relative">
-      <SmoothScroll>
-        <Cursor />
-        <ScrollProgress />
+    <SmoothScroll>
+      <a href="#main-content" className="skip-link">Ir al contenido principal</a>
+      <Cursor />
+      <ScrollProgress />
+      <Loader />
+      <div className="bg-ink min-h-screen text-bone overflow-x-hidden">
+        <CartDrawer />
         <Navbar />
-        <main>
+        <main id="main-content" tabIndex={-1}>
           <Hero />
-          <Marquee />
-          <Collection />
-          <LiveStats />
-          <Atelier />
-          <Process />
-          <Marquee2 />
-          <Looks />
-          <Lookbook />
-          <Showrooms />
-          <Manifesto />
-          <Testimonials />
-          <Newsletter />
-          <Contact />
+          <Suspense fallback={null}><Marquee dark /></Suspense>
+          <Suspense fallback={null}><Collection /></Suspense>
+          <Suspense fallback={null}><Marquee /></Suspense>
+          <Suspense fallback={null}><Lookbook /></Suspense>
+          <Suspense fallback={null}><Looks /></Suspense>
+          <Suspense fallback={null}><Atelier /></Suspense>
+          <Suspense fallback={null}><Process /></Suspense>
+          <Suspense fallback={null}><Manifesto /></Suspense>
+          <Suspense fallback={null}><Testimonials /></Suspense>
+          <Suspense fallback={null}><LiveStats /></Suspense>
+          <Suspense fallback={null}><Marquee2 /></Suspense>
+          <Suspense fallback={null}><Showrooms /></Suspense>
+          <Suspense fallback={null}><Contact /></Suspense>
+          <Suspense fallback={null}><Newsletter /></Suspense>
+          <Suspense fallback={null}><Footer /></Suspense>
         </main>
-        <Footer />
-      </SmoothScroll>
-    </div>
+      </div>
+    </SmoothScroll>
   );
 }

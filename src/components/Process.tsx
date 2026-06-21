@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { media } from "../config/media";
+import { media, srcSet } from "../config/media";
 
 const steps = [
   { num: "01", title: "Croquis", subtitle: "Semana 1", desc: "El director artístico interpreta su visión. 8 a 12 croquis preliminares sobre papel algodón.", img: media.pexelsEditorial5 },
@@ -54,7 +54,7 @@ function ProcessStep({ step, index }: { step: typeof steps[number]; index: numbe
       <div className={`pl-16 md:pl-0 ${isEven ? "md:order-1 md:pr-12" : "md:order-2 md:pl-12"}`}>
         <div className="relative overflow-hidden aspect-[4/5] group">
           <motion.div initial={{ scale: 1.3 }} whileInView={{ scale: 1 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }} className="absolute inset-0">
-            <img src={step.img} alt={step.title} loading="lazy" className="zoom-img w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
+            <img src={step.img} alt={step.title} loading="lazy" srcSet={srcSet(step.img)} sizes="(max-width: 768px) 100vw, 40vw" className="zoom-img w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
           <div className="absolute bottom-4 left-4 font-display text-7xl md:text-8xl text-bone/30">{step.num}</div>

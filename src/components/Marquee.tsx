@@ -1,19 +1,33 @@
+import { motion } from "framer-motion";
+
 const items = [
-  "Atelier Paris", "Hand Crafted", "Made in France", "Haute Couture",
-  "Since 1987", "Slow Fashion", "Bespoke Tailoring", "Couture · 2026",
+  "Haute Couture", "Atelier Paris", "Saison 2026", "Sur Mesure",
+  "Fait Main", "Édition Limitée",
 ];
 
-export default function Marquee() {
+interface MarqueeProps {
+  dark?: boolean;
+}
+
+export default function Marquee({ dark = false }: MarqueeProps) {
   return (
-    <section className="relative bg-bone text-ink py-6 md:py-8 overflow-hidden border-y border-ink/10">
-      <div className="flex marquee-track whitespace-nowrap">
+    <section className={`relative overflow-hidden py-5 md:py-6 border-y ${
+      dark ? "bg-ink border-bone/10" : "bg-bone border-ink/10"
+    }`}>
+      <motion.div
+        className="flex whitespace-nowrap"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      >
         {[...items, ...items, ...items, ...items].map((t, i) => (
           <div key={i} className="flex items-center px-8 md:px-14 shrink-0">
-            <span className="font-display text-3xl md:text-6xl tracking-tight">{t}</span>
+            <span className={`font-display text-3xl md:text-6xl tracking-tight ${
+              dark ? "text-bone/45" : "text-ink/45"
+            }`}>{t}</span>
             <span className="mx-8 md:mx-14 text-clay">✦</span>
           </div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

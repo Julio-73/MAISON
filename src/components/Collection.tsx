@@ -1,23 +1,23 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { media } from "../config/media";
-import DistortedImage from "./DistortedImage";
+import { useCartStore } from "../store/cartStore";
 
 const collections = [
   {
-    num: "01", title: "Lumière", subtitle: "Colección Otoño",
+    id: "c1", num: "01", title: "Lumière", subtitle: "Colección Otoño", price: 3400,
     img: media.collection1,
     desc: "Una oda a la luz dorada del otoño parisino. Sedas crudas, lanas vírgenes y bordados a mano que respiran calma y sofisticación.",
     tags: ["12 piezas", "Edición limitada"],
   },
   {
-    num: "02", title: "Écho", subtitle: "Atelier Privé",
+    id: "c2", num: "02", title: "Écho", subtitle: "Atelier Privé", price: 4200,
     img: media.collection2,
     desc: "Texturas esculpidas, pliegues arquitectónicos. Una colección que explora el silencio entre las formas y la piel.",
     tags: ["8 piezas únicas", "Hecho a medida"],
   },
   {
-    num: "03", title: "Nuit", subtitle: "Gala · Couture",
+    id: "c3", num: "03", title: "Nuit", subtitle: "Gala · Couture", price: 5800,
     img: media.collection3,
     desc: "La noche como escenario. Negros profundos, lentejuelas tejidas a mano y volúmenes que desafían la gravedad.",
     tags: ["6 piezas", "Pasarela exclusiva"],
@@ -57,6 +57,7 @@ function CollectionItem({ item, index }: { item: typeof collections[number]; ind
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const textX = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -120 : 120, index % 2 === 0 ? 120 : -120]);
   const isEven = index % 2 === 0;
+  const addItem = useCartStore((state) => state.addItem);
 
   return (
     <motion.div
@@ -81,7 +82,7 @@ function CollectionItem({ item, index }: { item: typeof collections[number]; ind
         className={`md:col-span-7 ${isEven ? "md:order-1" : "md:order-2"} relative overflow-hidden aspect-[4/5] md:aspect-[5/6] border border-bone/10 p-2 bg-bone/[0.02]`}
       >
         <div className="relative w-full h-full overflow-hidden">
-          <DistortedImage src={item.img} alt={item.title} className="zoom-img w-full h-full object-cover" />
+          <img src={item.img} alt={item.title} loading="lazy" className="zoom-img w-full h-full object-cover" />
         </div>
         <div className="absolute top-6 left-6 text-bone mix-blend-difference">
           <div className="font-display text-6xl md:text-8xl opacity-40">{item.num}</div>
@@ -107,10 +108,19 @@ function CollectionItem({ item, index }: { item: typeof collections[number]; ind
               <span key={t} className="text-[10px] tracking-[0.3em] uppercase border border-bone/15 px-4 py-2 rounded-full text-bone/60 bg-bone/[0.01]">{t}</span>
             ))}
           </div>
-          <a href="#contact" className="mt-12 inline-flex items-center gap-4 text-[11px] tracking-[0.3em] uppercase text-bone group" data-cursor-hover>
-            <span className="link-line">Explorar colección</span>
-            <span className="w-8 h-px bg-bone group-hover:w-16 transition-all duration-500" />
-          </a>
+          <div className="mt-12 flex flex-wrap items-center gap-6">
+            <button
+              onClick={() => addItem({ id: item.id, name: item.title, price: item.price, image: item.img })}
+              className="btn-fill inline-flex items-center gap-3 bg-bone text-ink px-8 py-4 text-[11px] tracking-[0.3em] uppercase transition-colors"
+              data-cursor-hover
+            >
+              Añadir a la bolsa
+            </button>
+            <a href="#contact" className="inline-flex items-center gap-4 text-[11px] tracking-[0.3em] uppercase text-bone group" data-cursor-hover>
+              <span className="link-line">Explorar colección</span>
+              <span className="w-8 h-px bg-bone group-hover:w-16 transition-all duration-500" />
+            </a>
+          </div>
         </motion.div>
       </div>
     </motion.div>

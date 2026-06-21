@@ -14,6 +14,7 @@ export default function DistortedImage({ src, alt, className = "" }: DistortedIm
   const currentHoverRef = useRef(0); // smooth interpolated hover value
   const mouseRef = useRef({ x: 0.5, y: 0.5 }); // target mouse coords
   const currentMouseRef = useRef({ x: 0.5, y: 0.5 }); // smooth mouse coords
+  const visibleRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -188,12 +189,24 @@ export default function DistortedImage({ src, alt, className = "" }: DistortedIm
     container.addEventListener("mouseenter", handleMouseEnter, { passive: true });
     container.addEventListener("mouseleave", handleMouseLeave, { passive: true });
 
+    // Pause animation when out of viewport
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => { visibleRef.current = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    visibilityObserver.observe(container);
+
     // --- Animation loop ---
     let animationFrameId: number;
     let startTime = performance.now();
 
     function render() {
       if (!gl) return;
+
+      if (!visibleRef.current) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
 
       const time = (performance.now() - startTime) * 0.001; // elapsed time in seconds
 
@@ -221,6 +234,7 @@ export default function DistortedImage({ src, alt, className = "" }: DistortedIm
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
       container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("mouseenter", handleMouseEnter);
       container.removeEventListener("mouseleave", handleMouseLeave);

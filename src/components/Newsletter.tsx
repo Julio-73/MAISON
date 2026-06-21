@@ -1,14 +1,19 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
+      setLoading(true);
+      // Simulating a CRM API request (e.g., Mailchimp, Klaviyo)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setLoading(false);
       setSubmitted(true);
     }
   };
@@ -45,16 +50,18 @@ export default function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Su dirección de correo electrónico"
+              aria-label="Dirección de correo electrónico"
               required
               className="w-full bg-transparent border-b border-ink/30 focus:border-clay outline-none py-3 text-sm tracking-[0.1em] placeholder-ink/40"
               data-cursor-hover
             />
             <button
               type="submit"
-              className="btn-fill w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-ink text-bone px-8 py-4 text-[10px] tracking-[0.3em] uppercase transition-colors shrink-0"
+              disabled={loading}
+              className="btn-fill w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-ink text-bone px-8 py-4 text-[10px] tracking-[0.3em] uppercase transition-colors shrink-0 disabled:opacity-70 disabled:cursor-wait"
               data-cursor-hover
             >
-              Unirse <ArrowRight size={14} />
+              {loading ? <Loader2 size={14} className="animate-spin" /> : <>Unirse <ArrowRight size={14} /></>}
             </button>
           </motion.form>
         ) : (
