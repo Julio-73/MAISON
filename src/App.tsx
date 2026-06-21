@@ -4,6 +4,10 @@ import Cursor from "./components/Cursor";
 import ScrollProgress from "./components/ScrollProgress";
 import Loader from "./components/Loader";
 import CartDrawer from "./components/CartDrawer";
+import WishlistDrawer from "./components/WishlistDrawer";
+import CheckoutModal from "./components/CheckoutModal";
+import MadeToMeasure from "./components/MadeToMeasure";
+import AppointmentCalendar from "./components/AppointmentCalendar";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 
@@ -31,6 +35,10 @@ export default function App() {
       <Loader />
       <div className="bg-ink min-h-screen text-bone overflow-x-hidden">
         <CartDrawer />
+        <WishlistDrawer />
+        <CheckoutModal />
+        <MadeToMeasure />
+        <AppointmentCalendar />
         <Navbar />
         <main id="main-content" tabIndex={-1}>
           <Hero />

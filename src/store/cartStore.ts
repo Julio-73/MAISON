@@ -11,10 +11,12 @@ export interface CartItem {
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
+  isCheckoutOpen: boolean;
   addItem: (item: Omit<CartItem, 'quantity'>) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   toggleCart: () => void;
+  toggleCheckout: () => void;
   clearCart: () => void;
   cartTotal: () => number;
 }
@@ -22,6 +24,7 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   isOpen: false,
+  isCheckoutOpen: false,
   addItem: (item) => set((state) => {
     const existing = state.items.find(i => i.id === item.id);
     if (existing) {
@@ -34,6 +37,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     items: state.items.map(i => i.id === id ? { ...i, quantity: Math.max(1, quantity) } : i)
   })),
   toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
+  toggleCheckout: () => set((state) => ({ isCheckoutOpen: !state.isCheckoutOpen })),
   clearCart: () => set({ items: [] }),
   cartTotal: () => get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
 }));

@@ -1,0 +1,113 @@
+{
+  "name": "MAISON CMS Schema",
+  "description": "Estructura de contenidos para Strapi CMS. Importar en Strapi Admin > Content-Type Builder > Import.",
+  "version": "1.0.0",
+  "contentTypes": [
+    {
+      "singularName": "collection",
+      "pluralName": "collections",
+      "displayName": "Collection",
+      "description": "Colecciones de moda (Lumière, Écho, Nuit)",
+      "attributes": {
+        "title": { "type": "string", "required": true, "maxLength": 120 },
+        "subtitle": { "type": "string", "required": true, "maxLength": 200 },
+        "num": { "type": "string", "required": true, "maxLength": 4 },
+        "price": { "type": "decimal", "required": true, "min": 0 },
+        "desc": { "type": "richtext", "required": true },
+        "tags": { "type": "json", "required": false, "default": [] },
+        "image": { "type": "media", "allowedTypes": ["images"], "multiple": false, "required": true },
+        "order": { "type": "integer", "required": false, "default": 0 }
+      }
+    },
+    {
+      "singularName": "product",
+      "pluralName": "products",
+      "displayName": "Product",
+      "description": "Productos individuales del lookbook/editorial",
+      "attributes": {
+        "name": { "type": "string", "required": true, "maxLength": 200 },
+        "code": { "type": "string", "required": true, "maxLength": 20 },
+        "category": { "type": "enumeration", "enum": ["Haute Couture", "Atelier Privé", "Gala", "Sastrería"], "required": true },
+        "price": { "type": "decimal", "required": true, "min": 0 },
+        "fabric": { "type": "string", "required": true, "maxLength": 200 },
+        "origin": { "type": "string", "required": false, "default": "Hecho en París" },
+        "image": { "type": "media", "allowedTypes": ["images"], "multiple": false, "required": true }
+      }
+    },
+    {
+      "singularName": "testimonial",
+      "pluralName": "testimonials",
+      "displayName": "Testimonial",
+      "description": "Testimonios de clientes VIP",
+      "attributes": {
+        "quote": { "type": "richtext", "required": true },
+        "author": { "type": "string", "required": true, "maxLength": 120 },
+        "role": { "type": "string", "required": true, "maxLength": 200 },
+        "avatar": { "type": "media", "allowedTypes": ["images"], "multiple": false, "required": false }
+      }
+    },
+    {
+      "singularName": "showroom",
+      "pluralName": "showrooms",
+      "displayName": "Showroom",
+      "description": "Boutiques y showrooms físicos",
+      "attributes": {
+        "city": { "type": "string", "required": true, "maxLength": 100 },
+        "country": { "type": "string", "required": true, "maxLength": 100 },
+        "address": { "type": "string", "required": true, "maxLength": 300 },
+        "flag": { "type": "string", "required": false, "maxLength": 10 },
+        "hours": { "type": "string", "required": true, "maxLength": 200 },
+        "order": { "type": "integer", "required": false, "default": 0 }
+      }
+    },
+    {
+      "singularName": "hero",
+      "pluralName": "heroes",
+      "displayName": "Hero",
+      "description": "Sección hero principal (una sola entrada activa)",
+      "attributes": {
+        "title": { "type": "string", "required": true, "maxLength": 200 },
+        "subtitle": { "type": "string", "required": true, "maxLength": 200 },
+        "description": { "type": "richtext", "required": false },
+        "cta": { "type": "string", "required": true, "maxLength": 60 },
+        "secondaryCta": { "type": "string", "required": false, "maxLength": 60 },
+        "videoUrl": { "type": "string", "required": false },
+        "active": { "type": "boolean", "required": false, "default": true }
+      }
+    },
+    {
+      "singularName": "made-to-measure",
+      "pluralName": "made-to-measures",
+      "displayName": "Made to Measure",
+      "description": "Solicitudes de alta costura a medida",
+      "attributes": {
+        "garment": { "type": "string", "required": true, "maxLength": 100 },
+        "details": { "type": "richtext", "required": false },
+        "fabric": { "type": "string", "required": true, "maxLength": 100 },
+        "color": { "type": "string", "required": true, "maxLength": 50 },
+        "clientName": { "type": "string", "required": true, "maxLength": 200 },
+        "clientEmail": { "type": "email", "required": true },
+        "clientPhone": { "type": "string", "required": true, "maxLength": 30 },
+        "deliveryDate": { "type": "date", "required": false },
+        "notes": { "type": "richtext", "required": false },
+        "status": { "type": "enumeration", "enum": ["pending", "contacted", "in-progress", "completed", "declined"], "default": "pending" }
+      }
+    },
+    {
+      "singularName": "appointment",
+      "pluralName": "appointments",
+      "displayName": "Appointment",
+      "description": "Citas en el atelier privé",
+      "attributes": {
+        "date": { "type": "date", "required": true },
+        "time": { "type": "string", "required": true, "maxLength": 10 },
+        "name": { "type": "string", "required": true, "maxLength": 200 },
+        "email": { "type": "email", "required": true },
+        "phone": { "type": "string", "required": true, "maxLength": 30 },
+        "service": { "type": "string", "required": true, "maxLength": 100 },
+        "notes": { "type": "richtext", "required": false },
+        "status": { "type": "enumeration", "enum": ["pending", "confirmed", "completed", "cancelled"], "default": "pending" }
+      }
+    }
+  ]
+}

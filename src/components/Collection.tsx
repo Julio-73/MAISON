@@ -1,7 +1,10 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { Heart } from "lucide-react";
 import { media } from "../config/media";
 import { useCartStore } from "../store/cartStore";
+import { useWishlist } from "../store/wishlistStore";
+import QuickView from "./ui/QuickView";
 
 const collections = [
   {
@@ -58,6 +61,9 @@ function CollectionItem({ item, index }: { item: typeof collections[number]; ind
   const textX = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -120 : 120, index % 2 === 0 ? 120 : -120]);
   const isEven = index % 2 === 0;
   const addItem = useCartStore((state) => state.addItem);
+  const { has, toggleItem } = useWishlist();
+  const [quickOpen, setQuickOpen] = useState(false);
+  const inWishlist = has(item.id);
 
   return (
     <motion.div
@@ -108,21 +114,26 @@ function CollectionItem({ item, index }: { item: typeof collections[number]; ind
               <span key={t} className="text-[10px] tracking-[0.3em] uppercase border border-bone/15 px-4 py-2 rounded-full text-bone/60 bg-bone/[0.01]">{t}</span>
             ))}
           </div>
-          <div className="mt-12 flex flex-wrap items-center gap-6">
-            <button
-              onClick={() => addItem({ id: item.id, name: item.title, price: item.price, image: item.img })}
-              className="btn-fill inline-flex items-center gap-3 bg-bone text-ink px-8 py-4 text-[11px] tracking-[0.3em] uppercase transition-colors"
-              data-cursor-hover
-            >
+          <div className="mt-12 flex flex-wrap items-center gap-4">
+            <button onClick={() => addItem({ id: item.id, name: item.title, price: item.price, image: item.img })}
+              className="btn-fill inline-flex items-center gap-3 bg-bone text-ink px-8 py-4 text-[11px] tracking-[0.3em] uppercase transition-colors" data-cursor-hover>
               Añadir a la bolsa
             </button>
-            <a href="#contact" className="inline-flex items-center gap-4 text-[11px] tracking-[0.3em] uppercase text-bone group" data-cursor-hover>
-              <span className="link-line">Explorar colección</span>
-              <span className="w-8 h-px bg-bone group-hover:w-16 transition-all duration-500" />
-            </a>
+            <button onClick={() => setQuickOpen(true)}
+              className="inline-flex items-center border border-bone/30 px-6 py-4 text-[10px] tracking-[0.2em] uppercase text-bone hover:bg-bone/10 transition-colors" data-cursor-hover>
+              Vista rápida
+            </button>
+            <button onClick={() => toggleItem({ id: item.id, name: item.title, price: item.price, image: item.img })}
+              className={`p-4 border transition-colors ${inWishlist ? "bg-clay/20 border-clay text-clay" : "border-bone/30 text-bone/60 hover:text-clay hover:border-clay"}`} data-cursor-hover>
+              <Heart size={16} strokeWidth={1.5} className={inWishlist ? "fill-clay" : ""} />
+            </button>
           </div>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {quickOpen && <QuickView product={{ id: item.id, name: item.title, price: item.price, image: item.img, desc: item.desc }} onClose={() => setQuickOpen(false)} />}
+      </AnimatePresence>
     </motion.div>
   );
 }

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Menu, X, ShoppingBag } from "lucide-react";
+import { Globe, Menu, X, ShoppingBag, Heart, Scissors, Calendar } from "lucide-react";
 import { useCartStore } from "../store/cartStore";
+import { useWishlist } from "../store/wishlistStore";
+import { useMTMStore } from "../store/madeToMeasureStore";
+import { useAppointmentStore } from "../store/appointmentStore";
+import CurrencySelector from "./ui/CurrencySelector";
 import { t, setLanguage, getCurrentLang, subscribe, langs } from "../i18n";
 
 export default function Navbar() {
@@ -11,6 +15,9 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false);
   const [, forceUpdate] = useState(0);
   const { toggleCart, items } = useCartStore();
+  const { toggle: toggleWish, items: wishItems } = useWishlist();
+  const { toggle: toggleMTM } = useMTMStore();
+  const { toggle: toggleAppt } = useAppointmentStore();
   const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   // Subscribe to language changes to force re-render
@@ -109,12 +116,21 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
+            {/* Currency */}
+            <CurrencySelector />
+
+            {/* Wishlist */}
+            <button onClick={toggleWish} className="relative flex items-center p-2 text-bone/70 hover:text-bone transition-colors" data-cursor-hover>
+              <Heart size={16} strokeWidth={1.4} />
+              {wishItems.length > 0 && (
+                <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-clay text-ink text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {wishItems.length}
+                </span>
+              )}
+            </button>
+
             {/* Cart */}
-            <button
-              onClick={toggleCart}
-              className="relative flex items-center p-2 text-bone/70 hover:text-bone transition-colors"
-              data-cursor-hover
-            >
+            <button onClick={toggleCart} className="relative flex items-center p-2 text-bone/70 hover:text-bone transition-colors" data-cursor-hover>
               <ShoppingBag size={18} strokeWidth={1.4} />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-clay text-ink text-[9px] font-bold rounded-full flex items-center justify-center">
@@ -123,11 +139,23 @@ export default function Navbar() {
               )}
             </button>
 
-            <a
-              href="#contact"
+            {/* Alta Costura */}
+            <button onClick={toggleMTM}
+              className="flex items-center gap-2 border border-bone/30 px-5 py-3 text-[10px] tracking-[0.2em] uppercase text-bone/80 hover:text-bone hover:border-bone transition-colors"
+              data-cursor-hover>
+              <Scissors size={12} strokeWidth={1.5} /> Alta Costura
+            </button>
+
+            {/* Reservar Cita */}
+            <button onClick={toggleAppt}
+              className="flex items-center gap-2 border border-bone/30 px-5 py-3 text-[10px] tracking-[0.2em] uppercase text-bone/80 hover:text-bone hover:border-bone transition-colors"
+              data-cursor-hover>
+              <Calendar size={12} strokeWidth={1.5} /> Cita Privada
+            </button>
+
+            <a href="#contact"
               className="inline-flex items-center border border-bone/40 px-6 py-3 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors"
-              data-cursor-hover
-            >
+              data-cursor-hover>
               {t("nav.reserve")}
             </a>
           </div>
@@ -139,12 +167,16 @@ export default function Navbar() {
             <span className="text-xl font-display tracking-[0.3em] text-bone">MAISON</span>
           </a>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={toggleCart}
-              className="relative p-2 text-bone"
-              aria-label="Open cart"
-            >
+          <div className="flex items-center gap-1">
+            <button onClick={toggleWish} className="relative p-2 text-bone" aria-label="Wishlist">
+              <Heart size={22} strokeWidth={1.5} />
+              {wishItems.length > 0 && (
+                <span className="absolute top-1 right-0 w-4 h-4 bg-clay text-ink text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {wishItems.length}
+                </span>
+              )}
+            </button>
+            <button onClick={toggleCart} className="relative p-2 text-bone" aria-label="Open cart">
               <ShoppingBag size={24} strokeWidth={1.5} />
               {cartCount > 0 && (
                 <span className="absolute top-1 right-0 w-4 h-4 bg-clay text-ink text-[10px] font-bold rounded-full flex items-center justify-center">
@@ -152,11 +184,7 @@ export default function Navbar() {
                 </span>
               )}
             </button>
-            <button
-              onClick={() => setOpen(true)}
-              className="p-2 text-bone"
-              aria-label="Open menu"
-            >
+            <button onClick={() => setOpen(true)} className="p-2 text-bone" aria-label="Open menu">
               <Menu size={28} strokeWidth={1.5} />
             </button>
           </div>
@@ -208,7 +236,7 @@ export default function Navbar() {
             </div>
 
             {/* Language selector */}
-            <div className="px-8 pb-12 shrink-0 flex flex-col items-center border-t border-bone/10 pt-8">
+            <div className="px-8 pb-6 shrink-0 flex flex-col items-center border-t border-bone/10 pt-8">
               <div className="text-[10px] tracking-[0.4em] uppercase text-bone/40 mb-4">Idioma</div>
               <div className="flex gap-6">
                 {langs.map((l) => (
@@ -223,6 +251,18 @@ export default function Navbar() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile action buttons */}
+            <div className="px-8 pb-8 shrink-0 flex flex-col items-center gap-3">
+              <button onClick={() => { toggleMTM(); setOpen(false); }}
+                className="w-full flex items-center justify-center gap-3 border border-bone/30 px-6 py-4 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors">
+                <Scissors size={14} /> Alta Costura
+              </button>
+              <button onClick={() => { toggleAppt(); setOpen(false); }}
+                className="w-full flex items-center justify-center gap-3 border border-bone/30 px-6 py-4 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors">
+                <Calendar size={14} /> Cita Privada
+              </button>
             </div>
           </motion.div>
         )}

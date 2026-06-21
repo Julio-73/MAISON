@@ -1,25 +1,36 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useState, useRef } from "react";
-import { Plus, X, ShoppingBag } from "lucide-react";
+import { Plus, Eye, Heart } from "lucide-react";
 import { media, srcSet } from "../config/media";
 import { useCartStore } from "../store/cartStore";
+import { useWishlist } from "../store/wishlistStore";
+import { useCurrency } from "../store/currencyStore";
+import QuickView from "./ui/QuickView";
+import Lightbox from "./ui/Lightbox";
 
 interface Product {
   id: string; code: string; name: string; category: string;
-  price: number; img: string; fabric: string; origin: string;
+  price: number; img: string; image: string; fabric: string; origin: string;
 }
 
 const products: Product[] = [
-  { id: "n01", code: "M·N·01", name: "Vestido Lumière", category: "Haute Couture", price: 18500, img: media.pexelsEditorial1, fabric: "Seda cruda · Encaje Calais", origin: "Hecho en París" },
-  { id: "n02", code: "M·N·02", name: "Abrigo Écho", category: "Atelier Privé", price: 12200, img: media.pexelsEditorial3, fabric: "Lana virgen · Cachemira", origin: "Hecho en París" },
-  { id: "n03", code: "M·N·03", name: "Conjunto Nuit", category: "Gala", price: 24800, img: media.pexelsEditorial8, fabric: "Terciopelo · Cristales Swarovski", origin: "Hecho en París" },
-  { id: "n04", code: "M·N·04", name: "Traje Construit", category: "Sastrería", price: 9800, img: media.pexelsEditorial7, fabric: "Lana fría · Forro seda", origin: "Hecho en París" },
+  { id: "n01", code: "M·N·01", name: "Vestido Lumière", category: "Haute Couture", price: 18500, img: media.pexelsEditorial1, image: media.pexelsEditorial1, fabric: "Seda cruda · Encaje Calais", origin: "Hecho en París" },
+  { id: "n02", code: "M·N·02", name: "Abrigo Écho", category: "Atelier Privé", price: 12200, img: media.pexelsEditorial3, image: media.pexelsEditorial3, fabric: "Lana virgen · Cachemira", origin: "Hecho en París" },
+  { id: "n03", code: "M·N·03", name: "Conjunto Nuit", category: "Gala", price: 24800, img: media.pexelsEditorial8, image: media.pexelsEditorial8, fabric: "Terciopelo · Cristales Swarovski", origin: "Hecho en París" },
+  { id: "n04", code: "M·N·04", name: "Traje Construit", category: "Sastrería", price: 9800, img: media.pexelsEditorial7, image: media.pexelsEditorial7, fabric: "Lana fría · Forro seda", origin: "Hecho en París" },
 ];
 
 export default function Lookbook() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
+  const { has, toggleItem: toggleWish } = useWishlist();
+  const format = useCurrency((s) => s.format);
+  const [quickProduct, setQuickProduct] = useState<Product | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const lightboxImages = products.map((p) => ({ src: p.img, alt: p.name }));
 
   return (
     <section id="lookbook" className="relative bg-bone text-ink py-32 md:py-48">
@@ -42,27 +53,44 @@ export default function Lookbook() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {products.map((p, i) => (
             <motion.article key={p.id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.1 }} onMouseEnter={() => setHovered(p.id)} onMouseLeave={() => setHovered(null)} className="group" data-cursor-hover>
-              <div className="relative aspect-[3/4] overflow-hidden bg-ink/5 mb-5">
-                <img src={p.img} alt={p.name} loading="lazy" srcSet={srcSet(p.img)} sizes="(max-width: 768px) 50vw, 25vw" className="zoom-img absolute inset-0 w-full h-full object-cover" />
+              <div className="relative aspect-[3/4] overflow-hidden bg-ink/5 mb-5" onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}>
+                <img src={p.img} alt={p.name} loading="lazy" srcSet={srcSet(p.img)} sizes="(max-width: 768px) 50vw, 25vw" className="zoom-img absolute inset-0 w-full h-full object-cover cursor-pointer" />
                 <div className="absolute top-3 left-3 text-[10px] tracking-[0.3em] uppercase text-bone bg-ink/60 backdrop-blur-sm px-3 py-1.5">{p.code}</div>
-                <motion.button onClick={() => addItem({ id: p.id, name: p.name, price: p.price, image: p.img })} initial={{ opacity: 0, y: 20 }} animate={{ opacity: hovered === p.id ? 1 : 0, y: hovered === p.id ? 0 : 20 }} className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label="Add to cart">
-                  <Plus size={18} strokeWidth={1.5} />
-                </motion.button>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: hovered === p.id ? 1 : 0 }} className="absolute inset-0 bg-ink/20 backdrop-blur-[2px] flex items-center justify-center gap-3">
+                  <button onClick={(e) => { e.stopPropagation(); setQuickProduct(p); }}
+                    className="w-11 h-11 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label="Quick view">
+                    <Eye size={16} strokeWidth={1.5} />
+                  </button>
+                  <button onClick={(e) => { e.stopPropagation(); addItem({ id: p.id, name: p.name, price: p.price, image: p.img }); }}
+                    className="w-11 h-11 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label="Add to cart">
+                    <Plus size={18} strokeWidth={1.5} />
+                  </button>
+                  <button onClick={(e) => { e.stopPropagation(); toggleWish({ id: p.id, name: p.name, price: p.price, image: p.img }); }}
+                    className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${has(p.id) ? "bg-clay text-ink" : "bg-bone text-ink hover:bg-clay"}`} aria-label="Wishlist">
+                    <Heart size={15} strokeWidth={1.5} className={has(p.id) ? "fill-ink" : ""} />
+                  </button>
+                </motion.div>
               </div>
               <div>
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-display text-2xl md:text-3xl leading-tight">{p.name}</h3>
+                  <div>
+                    <h3 className="font-display text-2xl md:text-3xl leading-tight">{p.name}</h3>
+                    <div className="mt-1 text-[10px] tracking-[0.3em] uppercase text-clay">{p.category}</div>
+                  </div>
                   <div className="text-right shrink-0">
                     <div className="text-[10px] tracking-[0.3em] uppercase text-ink/50">Desde</div>
-                    <div className="font-display text-xl">€{p.price.toLocaleString()}</div>
+                    <div className="font-display text-xl">{format(p.price)}</div>
                   </div>
                 </div>
-                <div className="mt-2 text-[10px] tracking-[0.3em] uppercase text-clay">{p.category}</div>
-                <div className="mt-3 text-xs text-ink/60 font-serif italic">{p.fabric}</div>
+                <div className="mt-2 text-xs text-ink/60 font-serif italic">{p.fabric}</div>
               </div>
             </motion.article>
           ))}
         </div>
+        <AnimatePresence>
+          {quickProduct && <QuickView product={quickProduct} onClose={() => setQuickProduct(null)} />}
+        </AnimatePresence>
+        {lightboxOpen && <Lightbox images={lightboxImages} index={lightboxIndex} onClose={() => setLightboxOpen(false)} />}
       </div>
     </section>
   );

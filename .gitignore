@@ -36,6 +36,7 @@ yarn-error.log*
 
 # Vite cache
 .vite/
+*.tsbuildinfo
 
 # OS
 Thumbs.db

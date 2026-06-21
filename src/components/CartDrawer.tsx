@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useCartStore } from "../store/cartStore";
+import { useCurrency } from "../store/currencyStore";
 import { useEffect } from "react";
 
 export default function CartDrawer() {
-  const { isOpen, toggleCart, items, updateQuantity, removeItem, cartTotal } = useCartStore();
+  const { isOpen, toggleCart, toggleCheckout, items, updateQuantity, removeItem, cartTotal } = useCartStore();
+  const format = useCurrency((s) => s.format);
 
   // Prevent scroll when cart is open
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function CartDrawer() {
                     <div className="flex-1 flex flex-col justify-between py-1">
                       <div>
                         <h3 className="font-display text-xl tracking-wider text-bone">{item.name}</h3>
-                        <p className="text-[10px] tracking-[0.2em] text-clay mt-1">€{item.price.toLocaleString()}</p>
+                        <p className="text-[10px] tracking-[0.2em] text-clay mt-1">{format(item.price)}</p>
                       </div>
                       
                       <div className="flex items-center justify-between mt-4">
@@ -93,9 +95,10 @@ export default function CartDrawer() {
               <div className="p-6 md:p-8 border-t border-bone/10 bg-ink shrink-0">
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">Subtotal</span>
-                  <span className="font-display text-2xl text-bone">€{cartTotal().toLocaleString()}</span>
+                  <span className="font-display text-2xl text-bone">{format(cartTotal())}</span>
                 </div>
-                <button className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold transition-colors">
+                <button onClick={toggleCheckout}
+                  className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold hover:bg-clay transition-colors">
                   Finalizar Compra
                 </button>
               </div>
