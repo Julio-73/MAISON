@@ -15,7 +15,7 @@ export default function Looks() {
   const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section id="looks" className="bg-ink text-bone py-32 md:py-48">
+    <section id="looks" className="bg-ink text-bone py-36 md:py-56">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-24">
           <div>

@@ -49,7 +49,7 @@ export default function LiveStats() {
   const parisTime = now.toLocaleTimeString("es-ES", { timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit" });
 
   return (
-    <section className="relative bg-bone text-ink py-20 md:py-28 border-y border-ink/10">
+    <section className="relative bg-bone text-ink py-24 md:py-32 border-y border-ink/10">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
           <div>

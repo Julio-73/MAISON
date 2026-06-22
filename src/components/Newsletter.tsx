@@ -21,7 +21,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="bg-bone text-ink py-28 md:py-36 border-y border-ink/10">
+    <section className="bg-bone text-ink py-32 md:py-44 border-y border-ink/10">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

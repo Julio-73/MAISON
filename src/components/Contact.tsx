@@ -16,7 +16,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="bg-ink text-bone py-32 md:py-48">
+    <section id="contact" className="bg-ink text-bone py-36 md:py-56">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-32">
           <div>

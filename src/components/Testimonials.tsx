@@ -9,7 +9,7 @@ export default function Testimonials() {
     { quote: t("testimonials.q3"), author: t("testimonials.author3"), role: t("testimonials.role3") },
   ];
   return (
-    <section id="testimonials" className="bg-ink text-bone py-32 md:py-48 border-t border-bone/10">
+    <section id="testimonials" className="bg-ink text-bone py-36 md:py-56 border-t border-bone/10">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
           <div>

@@ -17,7 +17,7 @@ export default function Process() {
   const lineHeight = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
 
   return (
-    <section ref={ref} id="process" className="relative bg-ink text-bone py-32 md:py-48 overflow-hidden">
+    <section ref={ref} id="process" className="relative bg-ink text-bone py-36 md:py-56 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <div className="max-w-3xl mb-20 md:mb-32">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-6">

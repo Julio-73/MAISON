@@ -9,7 +9,7 @@ export default function Manifesto() {
     { text: t("manifesto.q3"), author: "Cristóbal" },
   ];
   return (
-    <section id="manifesto" className="relative bg-ink text-bone py-32 md:py-48 overflow-hidden">
+    <section id="manifesto" className="relative bg-ink text-bone py-36 md:py-56 overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
         <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 0.05, scale: 1 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 2 }} className="font-display text-[20vw] md:text-[15vw] leading-none whitespace-nowrap text-bone">
           MAISON
