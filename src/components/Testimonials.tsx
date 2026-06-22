@@ -1,24 +1,13 @@
 import { motion } from "framer-motion";
-
-const testimonials = [
-  {
-    quote: "Maison no solo diseña vestidos, esculpe identidades. Una experiencia de alta costura inigualable en la era del fast fashion.",
-    author: "Vogue España",
-    role: "Editorial de Moda",
-  },
-  {
-    quote: "El abrigo Écho que encargué es una obra de arte. El nivel de detalle en el forro de seda y los acabados a mano justifica cada segundo de espera.",
-    author: "Elena R.",
-    role: "Clienta Privada · Milán",
-  },
-  {
-    quote: "Una visión singular que fusiona la tradición artesanal francesa con líneas arquitectónicas modernas. Absolutamente sublime.",
-    author: "Le Figaro",
-    role: "Crítica de Alta Costura",
-  },
-];
+import { useT, t } from "../i18n";
 
 export default function Testimonials() {
+  const t = useT();
+  const testimonials = [
+    { quote: t("testimonials.q1"), author: t("testimonials.author1"), role: t("testimonials.role1") },
+    { quote: t("testimonials.q2"), author: t("testimonials.author2"), role: t("testimonials.role2") },
+    { quote: t("testimonials.q3"), author: t("testimonials.author3"), role: t("testimonials.role3") },
+  ];
   return (
     <section id="testimonials" className="bg-ink text-bone py-32 md:py-48 border-t border-bone/10">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -26,10 +15,10 @@ export default function Testimonials() {
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-center gap-4 mb-6">
               <span className="w-12 h-px bg-clay" />
-              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">Testimonios</span>
+              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">{t("testimonials.label")}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }} className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">
-              La opinión<br /><span className="italic font-light text-clay">de nuestro círculo.</span>
+              {t("testimonials.heading1")}<br /><span className="italic font-light text-clay">{t("testimonials.heading2")}</span>
             </motion.h2>
           </div>
         </div>

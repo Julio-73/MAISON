@@ -1,22 +1,21 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, Check, Ruler, Shirt, Palette, User, ClipboardList } from "lucide-react";
 import { useMTMStore, mtmSteps } from "../store/madeToMeasureStore";
+import { useT, t } from "../i18n";
 
 const icons = [Shirt, Ruler, Palette, User, ClipboardList];
 
-const garments = [
-  "Vestido de noche", "Traje sastre", "Abrigo", "Blusa", "Falda", "Pantalón", "Americana", "Camisa a medida",
-];
-
-const fabrics = [
-  "Seda cruda", "Cachemira", "Lana virgen", "Algodón egipcio", "Lino belga", "Terciopelo", "Encaje Chantilly", "Organza",
-];
-
-const colors = [
-  "Negro", "Blanco", "Marfil", "Gris perla", "Azul medianoche", "Burdeos", "Verde bosque", "Rosa empolvado",
-];
-
 export default function MadeToMeasure() {
+  const t = useT();
+  const garments = [
+    t("mtm.garment1"), t("mtm.garment2"), t("mtm.garment3"), t("mtm.garment4"), t("mtm.garment5"), t("mtm.garment6"), t("mtm.garment7"), t("mtm.garment8"),
+  ];
+  const fabrics = [
+    t("mtm.fabric1"), t("mtm.fabric2"), t("mtm.fabric3"), t("mtm.fabric4"), t("mtm.fabric5"), t("mtm.fabric6"), t("mtm.fabric7"), t("mtm.fabric8"),
+  ];
+  const colors = [
+    t("mtm.color1"), t("mtm.color2"), t("mtm.color3"), t("mtm.color4"), t("mtm.color5"), t("mtm.color6"), t("mtm.color7"), t("mtm.color8"),
+  ];
   const { form, isOpen, submitted, set, nextStep, prevStep, reset, toggle, submit } = useMTMStore();
   const s = form.step;
   const Icon = icons[s] || Shirt;
@@ -51,9 +50,9 @@ export default function MadeToMeasure() {
                     <ChevronLeft size={20} />
                   </button>
                 )}
-                <h2 className="font-display text-xl tracking-[0.2em] text-bone uppercase">Alta Costura</h2>
+                <h2 className="font-display text-xl tracking-[0.2em] text-bone uppercase">{t("mtm.title")}</h2>
               </div>
-              <button onClick={handleClose} className="p-1 text-bone/60 hover:text-bone transition-colors" aria-label="Cerrar">
+              <button onClick={handleClose} className="p-1 text-bone/60 hover:text-bone transition-colors" aria-label={t("mtm.close")}>
                 <X size={22} strokeWidth={1.5} />
               </button>
             </div>
@@ -80,25 +79,25 @@ export default function MadeToMeasure() {
                   <div className="w-16 h-16 rounded-full bg-bone flex items-center justify-center mb-6">
                     <Check size={28} strokeWidth={2.5} className="text-ink" />
                   </div>
-                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">Solicitud Enviada</h3>
-                  <p className="font-serif italic text-lg text-bone/60 mb-2">Nos pondremos en contacto en 24-48 horas.</p>
-                  <p className="text-xs text-bone/40 max-w-xs">Nuestro atelier revisará tus preferencias y te enviará un presupuesto personalizado.</p>
+                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">{t("mtm.sent")}</h3>
+                  <p className="font-serif italic text-lg text-bone/60 mb-2">{t("mtm.sent.msg")}</p>
+                  <p className="text-xs text-bone/40 max-w-xs">{t("mtm.sent.note")}</p>
                   <button onClick={handleClose}
                     className="mt-8 border border-bone/40 px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors">
-                    Cerrar
+                    {t("mtm.close")}
                   </button>
                 </div>
               ) : (
                 <>
                   <div className="flex items-center gap-4 pb-2">
                     <Icon size={18} strokeWidth={1.5} className="text-clay" />
-                    <span className="text-[10px] tracking-[0.3em] uppercase text-clay">{mtmSteps[s].label}</span>
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-clay">{t("mtm.step" + (s + 1))}</span>
                   </div>
 
                   {/* Step 0: Garment */}
                   {s === 0 && (
                     <div className="space-y-5">
-                      <p className="text-bone/60 font-serif italic text-lg">¿Qué pieza deseas crear?</p>
+                      <p className="text-bone/60 font-serif italic text-lg">{t("mtm.garment_heading")}</p>
                       <div className="grid grid-cols-2 gap-3">
                         {garments.map((g) => (
                           <button key={g} onClick={() => set("garment", g)}
@@ -109,10 +108,10 @@ export default function MadeToMeasure() {
                         ))}
                       </div>
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Detalles adicionales</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("mtm.details")}</label>
                         <textarea value={form.details} onChange={(e) => set("details", e.target.value)} rows={3}
                           className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20 resize-none font-serif italic"
-                          placeholder="Describe tu visión, inspiración, referencias..." />
+                          placeholder={t("mtm.details_placeholder")} />
                       </div>
                     </div>
                   )}
@@ -120,11 +119,11 @@ export default function MadeToMeasure() {
                   {/* Step 1: Measurements */}
                   {s === 1 && (
                     <div className="space-y-5">
-                      <p className="text-bone/60 font-serif italic text-lg">Tus medidas (cm)</p>
+                      <p className="text-bone/60 font-serif italic text-lg">{t("mtm.measure_heading")}</p>
                       <div className="grid grid-cols-2 gap-4">
                         {(["height", "bust", "waist", "hips", "inseam", "shoulder", "sleeve"] as const).map((k) => (
                           <div key={k}>
-                            <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{k}</label>
+                            <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("mtm." + k)}</label>
                             <input type="number" value={form[k]} onChange={(e) => set(k, e.target.value)} placeholder="cm"
                               className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20" />
                           </div>
@@ -137,7 +136,7 @@ export default function MadeToMeasure() {
                   {s === 2 && (
                     <div className="space-y-5">
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">Tejido principal</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">{t("mtm.fabric_heading")}</label>
                         <div className="grid grid-cols-2 gap-3">
                           {fabrics.map((f) => (
                             <button key={f} onClick={() => set("fabric", f)}
@@ -149,7 +148,7 @@ export default function MadeToMeasure() {
                         </div>
                       </div>
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">Color</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">{t("mtm.color_heading")}</label>
                         <div className="grid grid-cols-2 gap-3">
                           {colors.map((c) => (
                             <button key={c} onClick={() => set("color", c)}
@@ -161,15 +160,15 @@ export default function MadeToMeasure() {
                         </div>
                       </div>
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Forro / Entretela</label>
-                        <input value={form.lining} onChange={(e) => set("lining", e.target.value)} placeholder="Seda, viscosa..."
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("mtm.lining")}</label>
+                        <input value={form.lining} onChange={(e) => set("lining", e.target.value)} placeholder={t("mtm.lining_placeholder")}
                           className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20" />
                       </div>
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Bordados / Personalización</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("mtm.embroidery")}</label>
                         <textarea value={form.embroidery} onChange={(e) => set("embroidery", e.target.value)} rows={2}
                           className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20 resize-none font-serif italic"
-                          placeholder="Iniciales, monograma, patrón de bordado..." />
+                          placeholder={t("mtm.embroidery_placeholder")} />
                       </div>
                     </div>
                   )}
@@ -177,28 +176,28 @@ export default function MadeToMeasure() {
                   {/* Step 3: Client */}
                   {s === 3 && (
                     <div className="space-y-5">
-                      <p className="text-bone/60 font-serif italic text-lg">Tus datos de contacto</p>
-                      {(["clientName", "clientEmail", "clientPhone"] as const).map((k) => (
+                      <p className="text-bone/60 font-serif italic text-lg">{t("mtm.client_heading")}</p>
+                      {(["clientName", "clientEmail", "clientPhone"] as const).map((k) => {
+                        const labels: Record<string, string> = { clientName: t("mtm.review_client"), clientEmail: t("mtm.review_email"), clientPhone: t("mtm.review_phone") };
+                        return (
                         <div key={k}>
-                          <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">
-                            {k.replace("client", "")}
-                          </label>
+                          <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{labels[k]}</label>
                           <input type={k === "clientEmail" ? "email" : "text"} value={form[k]}
                             onChange={(e) => set(k, e.target.value)}
                             className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20"
-                            placeholder={k === "clientEmail" ? "correo@ejemplo.com" : undefined} />
+                            placeholder={k === "clientEmail" ? t("checkout.email_placeholder") : undefined} />
                         </div>
-                      ))}
+                      ); })}
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Fecha deseada de entrega</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("mtm.delivery")}</label>
                         <input type="date" value={form.deliveryDate} onChange={(e) => set("deliveryDate", e.target.value)}
                           className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors" />
                       </div>
                       <div>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Notas adicionales</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("mtm.notes")}</label>
                         <textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2}
                           className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20 resize-none font-serif italic"
-                          placeholder="Alergias, plazos, referencias..." />
+                          placeholder={t("mtm.notes_placeholder")} />
                       </div>
                     </div>
                   )}
@@ -206,26 +205,26 @@ export default function MadeToMeasure() {
                   {/* Step 4: Review */}
                   {s === 4 && (
                     <div className="space-y-5">
-                      <p className="text-bone/60 font-serif italic text-lg">Revisa tu solicitud</p>
+                      <p className="text-bone/60 font-serif italic text-lg">{t("mtm.review_heading")}</p>
                       <div className="space-y-4 border border-bone/10 p-6">
-                        <ReviewRow label="Prenda" value={form.garment} />
-                        <ReviewRow label="Detalles" value={form.details} />
-                        <ReviewRow label="Medidas" value={`Altura: ${form.height} · Contorno: ${form.bust} · Cintura: ${form.waist} · Cadera: ${form.hips}`} />
-                        <ReviewRow label="Tejido" value={form.fabric} />
-                        <ReviewRow label="Color" value={form.color} />
-                        <ReviewRow label="Forro" value={form.lining || "—"} />
-                        <ReviewRow label="Bordados" value={form.embroidery || "—"} />
-                        <ReviewRow label="Cliente" value={form.clientName} />
-                        <ReviewRow label="Email" value={form.clientEmail} />
-                        <ReviewRow label="Teléfono" value={form.clientPhone} />
-                        <ReviewRow label="Entrega deseada" value={form.deliveryDate || "—"} />
+                        <ReviewRow label={t("mtm.review_garment")} value={form.garment} />
+                        <ReviewRow label={t("mtm.review_details")} value={form.details} />
+                        <ReviewRow label={t("mtm.review_measurements")} value={`${t("mtm.height")}: ${form.height} · ${t("mtm.bust")}: ${form.bust} · ${t("mtm.waist")}: ${form.waist} · ${t("mtm.hips")}: ${form.hips}`} />
+                        <ReviewRow label={t("mtm.review_fabric")} value={form.fabric} />
+                        <ReviewRow label={t("mtm.review_color")} value={form.color} />
+                        <ReviewRow label={t("mtm.review_lining")} value={form.lining || "—"} />
+                        <ReviewRow label={t("mtm.review_embroidery")} value={form.embroidery || "—"} />
+                        <ReviewRow label={t("mtm.review_client")} value={form.clientName} />
+                        <ReviewRow label={t("mtm.review_email")} value={form.clientEmail} />
+                        <ReviewRow label={t("mtm.review_phone")} value={form.clientPhone} />
+                        <ReviewRow label={t("mtm.review_delivery")} value={form.deliveryDate || "—"} />
                       </div>
                     </div>
                   )}
 
                   <button onClick={s < 4 ? nextStep : submit} disabled={!canProceed()}
                     className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold mt-4 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-clay">
-                    {s < 4 ? "Continuar" : "Enviar solicitud"}
+                    {s < 4 ? t("mtm.continue") : t("mtm.submit")}
                   </button>
                 </>
               )}

@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { useT } from "./i18n";
 import SmoothScroll from "./components/SmoothScroll";
 import Cursor from "./components/Cursor";
 import ScrollProgress from "./components/ScrollProgress";
@@ -27,9 +28,10 @@ const Newsletter = lazy(() => import("./components/Newsletter"));
 const Footer = lazy(() => import("./components/Footer"));
 
 export default function App() {
+  const t = useT();
   return (
     <SmoothScroll>
-      <a href="#main-content" className="skip-link">Ir al contenido principal</a>
+      <a href="#main-content" className="skip-link">{t("skip")}</a>
       <Cursor />
       <ScrollProgress />
       <Loader />

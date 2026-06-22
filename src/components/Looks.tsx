@@ -2,15 +2,16 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { media } from "../config/media";
 import DistortedImage from "./DistortedImage";
-
-const looks = [
-  { img: media.look1, title: "Noir Silhouette", code: "L·01" },
-  { img: media.look2, title: "Rouge Mémoire", code: "L·02" },
-  { img: media.look3, title: "Beige Construit", code: "L·03" },
-  { img: media.look4, title: "Cuir Sculpté", code: "L·04" },
-];
+import { useT, t } from "../i18n";
 
 export default function Looks() {
+  const t = useT();
+  const looks = [
+    { img: media.look1, title: t("looks.l1.title"), code: "L·01" },
+    { img: media.look2, title: t("looks.l2.title"), code: "L·02" },
+    { img: media.look3, title: t("looks.l3.title"), code: "L·03" },
+    { img: media.look4, title: t("looks.l4.title"), code: "L·04" },
+  ];
   const [active, setActive] = useState<number | null>(null);
 
   return (
@@ -20,14 +21,14 @@ export default function Looks() {
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-6">
               <span className="w-12 h-px bg-clay" />
-              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">La Campaña</span>
+              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">{t("looks.label")}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }} className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">
-              Mirada<br /><span className="italic font-light text-clay">de autor.</span>
+              {t("looks.heading1")}<br /><span className="italic font-light text-clay">{t("looks.heading2")}</span>
             </motion.h2>
           </div>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, delay: 0.3 }} className="max-w-sm text-bone/60 leading-relaxed font-serif text-lg">
-            Cuatro imágenes. Cuatro formas de habitar la elegancia. Fotografía de Claire Fontaine · París, 2026.
+            {t("looks.desc")}
           </motion.p>
         </div>
 

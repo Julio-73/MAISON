@@ -3,10 +3,12 @@ import { useState } from "react";
 import { X, ChevronLeft, CreditCard, Truck, Check } from "lucide-react";
 import { useCartStore } from "../store/cartStore";
 import { useCurrency } from "../store/currencyStore";
+import { useT } from "../i18n";
 
 type Step = "review" | "shipping" | "payment" | "confirmed";
 
 export default function CheckoutModal() {
+  const t = useT();
   const { isCheckoutOpen, toggleCheckout, items, cartTotal, clearCart } = useCartStore();
   const format = useCurrency((s) => s.format);
   const [step, setStep] = useState<Step>("review");
@@ -15,9 +17,9 @@ export default function CheckoutModal() {
   const update = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const steps: { key: Step; label: string }[] = [
-    { key: "review", label: "Revisar" },
-    { key: "shipping", label: "Envío" },
-    { key: "payment", label: "Pago" },
+    { key: "review", label: t("checkout.review") },
+    { key: "shipping", label: t("checkout.shipping") },
+    { key: "payment", label: t("checkout.payment") },
   ];
   const stepIndex = steps.findIndex((s) => s.key === step);
 
@@ -44,9 +46,9 @@ export default function CheckoutModal() {
                     <ChevronLeft size={20} />
                   </button>
                 )}
-                <h2 className="font-display text-xl tracking-[0.2em] text-bone uppercase">Checkout</h2>
+                <h2 className="font-display text-xl tracking-[0.2em] text-bone uppercase">{t("checkout.title")}</h2>
               </div>
-              <button onClick={reset} className="p-1 text-bone/60 hover:text-bone transition-colors" aria-label="Cerrar">
+              <button onClick={reset} className="p-1 text-bone/60 hover:text-bone transition-colors" aria-label={t("checkout.close")}>
                 <X size={22} strokeWidth={1.5} />
               </button>
             </div>
@@ -70,7 +72,7 @@ export default function CheckoutModal() {
               {/* Step: Review */}
               {step === "review" && (
                 <div className="space-y-4">
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">Productos</p>
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.products")}</p>
                   {items.map((i) => (
                     <div key={i.id} className="flex justify-between items-center border-b border-bone/5 pb-4">
                       <div className="flex items-center gap-4">
@@ -86,12 +88,12 @@ export default function CheckoutModal() {
                     </div>
                   ))}
                   <div className="flex justify-between pt-2">
-                    <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">Total</span>
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">{t("checkout.total")}</span>
                     <span className="font-display text-xl text-bone">{format(cartTotal())}</span>
                   </div>
                   <button onClick={() => setStep("shipping")}
                     className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold mt-4 hover:bg-clay transition-colors">
-                    Continuar
+                    {t("checkout.continue")}
                   </button>
                 </div>
               )}
@@ -99,18 +101,18 @@ export default function CheckoutModal() {
               {/* Step: Shipping */}
               {step === "shipping" && (
                 <div className="space-y-5">
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">Información de envío</p>
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.shipping_info")}</p>
                   {(["name", "email", "address", "city", "zip"] as const).map((k) => (
                     <div key={k}>
-                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{k}</label>
+                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t(k)}</label>
                       <input value={form[k]} onChange={(e) => update(k, e.target.value)}
                         className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20"
-                        placeholder={k === "email" ? "correo@ejemplo.com" : undefined} />
+                        placeholder={k === "email" ? t("checkout.email_placeholder") : undefined} />
                     </div>
                   ))}
                   <button onClick={() => setStep("payment")}
                     className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold mt-2 hover:bg-clay transition-colors">
-                    Continuar al pago
+                    {t("checkout.continue_payment")}
                   </button>
                 </div>
               )}
@@ -118,31 +120,31 @@ export default function CheckoutModal() {
               {/* Step: Payment */}
               {step === "payment" && (
                 <div className="space-y-5">
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">Información de pago</p>
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.payment_info")}</p>
                   <div>
-                    <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Número de tarjeta</label>
+                    <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("checkout.card")}</label>
                     <input value={form.card} onChange={(e) => update("card", e.target.value)} placeholder="4242 4242 4242 4242"
                       className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Vencimiento</label>
+                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("checkout.expiry")}</label>
                       <input value={form.expiry} onChange={(e) => update("expiry", e.target.value)} placeholder="MM/AA"
                         className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20" />
                     </div>
                     <div>
-                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">CVV</label>
+                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("checkout.cvv")}</label>
                       <input value={form.cvv} onChange={(e) => update("cvv", e.target.value)} placeholder="123"
                         className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20" />
                     </div>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-bone/10">
-                    <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">Total a cobrar</span>
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">{t("checkout.total_charge")}</span>
                     <span className="font-display text-xl text-bone">{format(cartTotal())}</span>
                   </div>
                   <button onClick={handleConfirm}
                     className="btn-fill w-full bg-clay text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold hover:bg-bone transition-colors">
-                    Confirmar pedido
+                    {t("checkout.confirm")}
                   </button>
                 </div>
               )}
@@ -153,12 +155,12 @@ export default function CheckoutModal() {
                   <div className="w-16 h-16 rounded-full bg-bone flex items-center justify-center mb-6">
                     <Check size={28} strokeWidth={2.5} className="text-ink" />
                   </div>
-                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">Pedido Confirmado</h3>
-                  <p className="font-serif italic text-lg text-bone/60 mb-2">Gracias por tu compra.</p>
-                  <p className="text-xs text-bone/40 max-w-xs">Recibirás un correo con los detalles de envío en breve.</p>
+                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">{t("checkout.confirmed_title")}</h3>
+                  <p className="font-serif italic text-lg text-bone/60 mb-2">{t("checkout.confirmed_sub")}</p>
+                  <p className="text-xs text-bone/40 max-w-xs">{t("checkout.confirmed_desc")}</p>
                   <button onClick={reset}
                     className="mt-8 border border-bone/40 px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors">
-                    Volver a la tienda
+                    {t("checkout.back")}
                   </button>
                 </div>
               )}

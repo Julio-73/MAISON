@@ -1,19 +1,19 @@
 import { motion } from "framer-motion";
-
-const stats = [
-  { n: "1.200", l: "Horas por pieza" },
-  { n: "100%", l: "Hecho a mano" },
-  { n: "37", l: "Años de oficio" },
-  { n: "23", l: "Países servidos" },
-];
-
-const pillars = [
-  { title: "Patronaje", desc: "Cada molde se construye sobre maniquí individual. La tela se corta a ojo, a mano, con tijeras de sastre heredadas." },
-  { title: "Bordado", desc: "Lesage, Lemarié y nuestro propio atelier colaboran en bordados que requieren hasta 800 horas por pieza." },
-  { title: "Sastrería", desc: "Sastres de quinta generación terminan cada costura a mano. La pajarita final nunca se cose: se ata." },
-];
+import { useT, t } from "../i18n";
 
 export default function Atelier() {
+  const t = useT();
+  const stats = [
+    { n: "1.200", l: t("atelier.stat1") },
+    { n: "100%", l: t("atelier.stat2") },
+    { n: "37", l: t("atelier.stat3") },
+    { n: "23", l: t("atelier.stat4") },
+  ];
+  const pillars = [
+    { title: t("atelier.pillar1_title"), desc: t("atelier.pillar1_desc") },
+    { title: t("atelier.pillar2_title"), desc: t("atelier.pillar2_desc") },
+    { title: t("atelier.pillar3_title"), desc: t("atelier.pillar3_desc") },
+  ];
   return (
     <section id="atelier" className="relative bg-bone text-ink py-32 md:py-48 overflow-hidden border-t border-ink/5">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -21,13 +21,13 @@ export default function Atelier() {
           <div className="lg:sticky lg:top-32">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-6">
               <span className="w-12 h-px bg-clay" />
-              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">L'Atelier</span>
+              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">{t("atelier.label")}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }} className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">
-              Donde el<br />tiempo<br /><span className="italic font-light text-clay">se cose a mano.</span>
+              {t("atelier.heading1")}<br /><span className="italic font-light text-clay">{t("atelier.heading2")}</span>
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, delay: 0.3 }} className="mt-10 text-lg md:text-xl text-ink/70 leading-relaxed font-serif max-w-md">
-              En el corazón del Marais, nuestro atelier preserva las técnicas que la industria olvidó. Aquí, cada prenda recorre entre 40 y 120 horas de trabajo humano.
+              {t("atelier.desc")}
             </motion.p>
             <div className="mt-16 grid grid-cols-2 gap-8">
               {stats.map((s, i) => (

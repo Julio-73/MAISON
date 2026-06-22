@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
-
-const showrooms = [
-  { city: "Paris", country: "France", address: "12 Rue de Sévigné, 75004", flag: "🇫🇷", hours: "Mar–Sam · 11h–19h" },
-  { city: "Milano", country: "Italia", address: "Via della Spiga 27, 20121", flag: "🇮🇹", hours: "Mar–Sab · 10h–19h" },
-  { city: "Tokyo", country: "日本", address: "Aoyama 5-6-23, Minato", flag: "🇯🇵", hours: "火–土 · 11時–20時" },
-  { city: "New York", country: "USA", address: "688 Madison Avenue, 10065", flag: "🇺🇸", hours: "Mon–Sat · 10am–7pm" },
-];
+import { useT, t } from "../i18n";
 
 export default function Showrooms() {
+  const t = useT();
+  const showrooms = [
+    { city: t("showrooms.s1_city"), country: t("showrooms.s1_country"), address: t("showrooms.s1_address"), flag: "🇫🇷", hours: t("showrooms.s1_hours") },
+    { city: t("showrooms.s2_city"), country: t("showrooms.s2_country"), address: t("showrooms.s2_address"), flag: "🇮🇹", hours: t("showrooms.s2_hours") },
+    { city: t("showrooms.s3_city"), country: t("showrooms.s3_country"), address: t("showrooms.s3_address"), flag: "🇯🇵", hours: t("showrooms.s3_hours") },
+    { city: t("showrooms.s4_city"), country: t("showrooms.s4_country"), address: t("showrooms.s4_address"), flag: "🇺🇸", hours: t("showrooms.s4_hours") },
+  ];
   return (
     <section id="showrooms" className="bg-ink text-bone py-32 md:py-48 border-t border-bone/10">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -16,13 +17,13 @@ export default function Showrooms() {
           <div>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-center gap-4 mb-6">
               <span className="w-12 h-px bg-clay" />
-              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">Boutiques</span>
+              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">{t("showrooms.label")}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }} className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">
-              Cuatro ciudades.<br /><span className="italic font-light text-clay">Una sola exigencia.</span>
+              {t("showrooms.heading1")}<br /><span className="italic font-light text-clay">{t("showrooms.heading2")}</span>
             </motion.h2>
           </div>
-          <p className="max-w-md text-bone/60 leading-relaxed font-serif">Reservamos citas privadas exclusivamente. Cada visita incluye una copa de champagne y acceso a las últimas piezas aún no publicadas.</p>
+          <p className="max-w-md text-bone/60 leading-relaxed font-serif">{t("showrooms.desc")}</p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-bone/10">
@@ -37,7 +38,7 @@ export default function Showrooms() {
               </div>
               <div className="mt-3 text-xs opacity-60 font-serif">{s.hours}</div>
               <div className="mt-8 pt-6 border-t border-current/15 flex items-center justify-between">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-60">Reservar</span>
+                <span className="text-[10px] tracking-[0.3em] uppercase opacity-60">{t("showrooms.reservar")}</span>
                 <span className="text-xl transition-transform duration-500 group-hover:rotate-45">↗</span>
               </div>
             </motion.div>

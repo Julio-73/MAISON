@@ -3,6 +3,7 @@ import { X, ShoppingBag, Heart } from "lucide-react";
 import { useCartStore } from "../../store/cartStore";
 import { useWishlist } from "../../store/wishlistStore";
 import { useCurrency } from "../../store/currencyStore";
+import { useT } from "../../i18n";
 
 interface QuickViewProps {
   product: {
@@ -13,6 +14,7 @@ interface QuickViewProps {
 }
 
 export default function QuickView({ product, onClose }: QuickViewProps) {
+  const t = useT();
   const addItem = useCartStore((s) => s.addItem);
   const { add: addWish, remove: remWish, has } = useWishlist();
   const format = useCurrency((s) => s.format);
@@ -48,12 +50,12 @@ export default function QuickView({ product, onClose }: QuickViewProps) {
               <div className="flex flex-col gap-3 mt-8">
                 <button onClick={() => { addItem({ id: product.id, name: product.name, price: product.price, image: product.image }); onClose(); }}
                   className="btn-fill w-full flex items-center justify-center gap-3 bg-ink text-bone py-4 text-[11px] tracking-[0.3em] uppercase transition-colors">
-                  <ShoppingBag size={14} strokeWidth={1.5} /> Añadir a la bolsa
+                  <ShoppingBag size={14} strokeWidth={1.5} /> {t("quickview.add")}
                 </button>
                 <button onClick={() => has(product.id) ? remWish(product.id) : addWish({ id: product.id, name: product.name, price: product.price, image: product.image })}
                   className={`w-full flex items-center justify-center gap-2 py-3 text-[10px] tracking-[0.3em] uppercase border transition-colors ${has(product.id) ? "border-clay text-clay" : "border-ink/20 text-ink/60 hover:border-ink/40"}`}>
                   <Heart size={13} strokeWidth={1.5} fill={has(product.id) ? "currentColor" : "none"} />
-                  {has(product.id) ? "En favoritos" : "Añadir a favoritos"}
+                  {has(product.id) ? t("quickview.in_wishlist") : t("quickview.add_wishlist")}
                 </button>
               </div>
             </div>

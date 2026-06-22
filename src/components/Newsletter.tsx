@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { useT } from "../i18n";
 
 export default function Newsletter() {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,12 +29,12 @@ export default function Newsletter() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-[11px] tracking-[0.5em] uppercase text-clay block mb-6">Cercle Privé</span>
+          <span className="text-[11px] tracking-[0.5em] uppercase text-clay block mb-6">{t("newsletter.label")}</span>
           <h2 className="font-display text-4xl md:text-6xl mb-8">
-            Forme parte <span className="italic">de la leyenda</span>
+            {t("newsletter.heading1")} <span className="italic">{t("newsletter.heading2")}</span>
           </h2>
           <p className="max-w-xl mx-auto text-ink/75 leading-relaxed font-serif text-lg mb-12">
-            Suscríbase para recibir invitaciones exclusivas a desfiles privados, previsualizaciones de colecciones de temporada y notas editoriales de nuestro director artístico.
+            {t("newsletter.desc")}
           </p>
         </motion.div>
 
@@ -49,8 +51,8 @@ export default function Newsletter() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Su dirección de correo electrónico"
-              aria-label="Dirección de correo electrónico"
+              placeholder={t("newsletter.placeholder")}
+              aria-label={t("newsletter.aria_label")}
               required
               className="w-full bg-transparent border-b border-ink/30 focus:border-clay outline-none py-3 text-sm tracking-[0.1em] placeholder-ink/40"
               data-cursor-hover
@@ -61,7 +63,7 @@ export default function Newsletter() {
               className="btn-fill w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-ink text-bone px-8 py-4 text-[10px] tracking-[0.3em] uppercase transition-colors shrink-0 disabled:opacity-70 disabled:cursor-wait"
               data-cursor-hover
             >
-              {loading ? <Loader2 size={14} className="animate-spin" /> : <>Unirse <ArrowRight size={14} /></>}
+              {loading ? <Loader2 size={14} className="animate-spin" /> : <>{t("newsletter.submit")} <ArrowRight size={14} /></>}
             </button>
           </motion.form>
         ) : (
@@ -70,7 +72,7 @@ export default function Newsletter() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-clay font-display text-2xl"
           >
-            Bienvenido al Círculo Privado de MAISON.
+            {t("newsletter.success")}
           </motion.div>
         )}
       </div>

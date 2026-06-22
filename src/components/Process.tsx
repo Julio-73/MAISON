@@ -1,16 +1,17 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { media, srcSet } from "../config/media";
-
-const steps = [
-  { num: "01", title: "Croquis", subtitle: "Semana 1", desc: "El director artístico interpreta su visión. 8 a 12 croquis preliminares sobre papel algodón.", img: media.pexelsEditorial5 },
-  { num: "02", title: "Patronaje", subtitle: "Semana 2-3", desc: "El patrón se construye directamente sobre su cuerpo. Tres pruebas mínimas para ajustar la silueta.", img: media.pexelsEditorial6 },
-  { num: "03", title: "Tela", subtitle: "Semana 4", desc: "Selección de textiles en los archivos históricos: sedas de Lyon, encajes de Calais, tweeds de Escocia.", img: media.pexelsEditorial4 },
-  { num: "04", title: "Bordado", subtitle: "Semana 5-10", desc: "Hasta 800 horas de bordado a mano en colaboración con Lesage. Cristales, plumas, lentejuelas.", img: media.pexelsEditorial2 },
-  { num: "05", title: "Pasarela", subtitle: "Semana 12", desc: "La pieza se presenta en una sesión privada. Ajustes finales. Embalaje en nuestro cofre de lino.", img: media.pexelsRunway1 },
-];
+import { useT, t } from "../i18n";
 
 export default function Process() {
+  const t = useT();
+  const steps = [
+    { num: "01", title: t("process.step1_title"), subtitle: t("process.step1_sub"), desc: t("process.step1_desc"), img: media.pexelsEditorial5 },
+    { num: "02", title: t("process.step2_title"), subtitle: t("process.step2_sub"), desc: t("process.step2_desc"), img: media.pexelsEditorial6 },
+    { num: "03", title: t("process.step3_title"), subtitle: t("process.step3_sub"), desc: t("process.step3_desc"), img: media.pexelsEditorial4 },
+    { num: "04", title: t("process.step4_title"), subtitle: t("process.step4_sub"), desc: t("process.step4_desc"), img: media.pexelsEditorial2 },
+    { num: "05", title: t("process.step5_title"), subtitle: t("process.step5_sub"), desc: t("process.step5_desc"), img: media.pexelsRunway1 },
+  ];
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const lineHeight = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
@@ -21,13 +22,13 @@ export default function Process() {
         <div className="max-w-3xl mb-20 md:mb-32">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-6">
             <span className="w-12 h-px bg-clay" />
-            <span className="text-[11px] tracking-[0.5em] uppercase text-clay">Del hilo a la pasarela</span>
+            <span className="text-[11px] tracking-[0.5em] uppercase text-clay">{t("process.label")}</span>
           </motion.div>
           <motion.h2 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }} className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">
-            Doce semanas.<br /><span className="italic font-light text-clay">Trescientas manos.</span>
+            {t("process.heading1")}<br /><span className="italic font-light text-clay">{t("process.heading2")}</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, delay: 0.3 }} className="mt-10 text-lg text-bone/70 leading-relaxed font-serif max-w-xl">
-            Cada pieza recorre un viaje meticuloso. Le invitamos a descubrir las cinco etapas que separan una idea de un vestido terminado.
+            {t("process.desc")}
           </motion.p>
         </div>
 
@@ -44,7 +45,7 @@ export default function Process() {
   );
 }
 
-function ProcessStep({ step, index }: { step: typeof steps[number]; index: number }) {
+function ProcessStep({ step, index }: { step: { num: string; title: string; subtitle: string; desc: string; img: string }; index: number }) {
   const isEven = index % 2 === 0;
   return (
     <motion.div initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-150px" }} transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }} className="relative grid md:grid-cols-2 gap-8 md:gap-16 items-center">

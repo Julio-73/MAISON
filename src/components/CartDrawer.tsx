@@ -3,8 +3,10 @@ import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useCartStore } from "../store/cartStore";
 import { useCurrency } from "../store/currencyStore";
 import { useEffect } from "react";
+import { useT } from "../i18n";
 
 export default function CartDrawer() {
+  const t = useT();
   const { isOpen, toggleCart, toggleCheckout, items, updateQuantity, removeItem, cartTotal } = useCartStore();
   const format = useCurrency((s) => s.format);
 
@@ -41,11 +43,11 @@ export default function CartDrawer() {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 md:p-8 border-b border-bone/10 shrink-0">
-              <h2 className="font-display text-2xl tracking-[0.2em] text-bone uppercase">Tu Bolsa</h2>
+              <h2 className="font-display text-2xl tracking-[0.2em] text-bone uppercase">{t("cart.title")}</h2>
               <button
                 onClick={toggleCart}
                 className="p-2 text-bone/60 hover:text-bone transition-colors"
-                aria-label="Cerrar bolsa"
+                aria-label={t("cart.close")}
               >
                 <X size={24} strokeWidth={1.5} />
               </button>
@@ -55,8 +57,8 @@ export default function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 no-scrollbar">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-bone/50 text-center">
-                  <span className="text-[10px] tracking-[0.3em] uppercase mb-4">Tu bolsa está vacía</span>
-                  <p className="font-serif italic text-lg">Descubre nuestras colecciones.</p>
+                  <span className="text-[10px] tracking-[0.3em] uppercase mb-4">{t("cart.empty")}</span>
+                  <p className="font-serif italic text-lg">{t("cart.empty_sub")}</p>
                 </div>
               ) : (
                 items.map((item) => (
@@ -94,12 +96,12 @@ export default function CartDrawer() {
             {items.length > 0 && (
               <div className="p-6 md:p-8 border-t border-bone/10 bg-ink shrink-0">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">Subtotal</span>
+                  <span className="text-[10px] tracking-[0.3em] uppercase text-bone/60">{t("cart.subtotal")}</span>
                   <span className="font-display text-2xl text-bone">{format(cartTotal())}</span>
                 </div>
                 <button onClick={toggleCheckout}
                   className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold hover:bg-clay transition-colors">
-                  Finalizar Compra
+                  {t("cart.checkout")}
                 </button>
               </div>
             )}

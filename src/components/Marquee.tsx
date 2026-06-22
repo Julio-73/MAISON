@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
-
-const items = [
-  "Haute Couture", "Atelier Paris", "Saison 2026", "Sur Mesure",
-  "Fait Main", "Édition Limitée",
-];
+import { useT, t } from "../i18n";
 
 interface MarqueeProps {
   dark?: boolean;
 }
 
 export default function Marquee({ dark = false }: MarqueeProps) {
+  const t = useT();
+  const items = [
+    t("marquee.item1"), t("marquee.item2"), t("marquee.item3"), t("marquee.item4"),
+    t("marquee.item5"), t("marquee.item6"),
+  ];
   return (
     <section className={`relative overflow-hidden py-5 md:py-6 border-y ${
       dark ? "bg-ink border-bone/10" : "bg-bone border-ink/10"

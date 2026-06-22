@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useT } from "../i18n";
 
 export default function Loader() {
+  const t = useT();
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
 
@@ -41,7 +43,7 @@ export default function Loader() {
               </span>
             </motion.div>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} transition={{ delay: 0.6, duration: 1 }} className="mt-6 text-[10px] tracking-[0.4em] uppercase text-bone/50">
-              Atelier Paris · Chargement
+              {t("loader.subtitle")}
             </motion.div>
           </div>
         </motion.div>

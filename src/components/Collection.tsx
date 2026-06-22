@@ -5,29 +5,30 @@ import { media } from "../config/media";
 import { useCartStore } from "../store/cartStore";
 import { useWishlist } from "../store/wishlistStore";
 import QuickView from "./ui/QuickView";
-
-const collections = [
-  {
-    id: "c1", num: "01", title: "Lumière", subtitle: "Colección Otoño", price: 3400,
-    img: media.collection1,
-    desc: "Una oda a la luz dorada del otoño parisino. Sedas crudas, lanas vírgenes y bordados a mano que respiran calma y sofisticación.",
-    tags: ["12 piezas", "Edición limitada"],
-  },
-  {
-    id: "c2", num: "02", title: "Écho", subtitle: "Atelier Privé", price: 4200,
-    img: media.collection2,
-    desc: "Texturas esculpidas, pliegues arquitectónicos. Una colección que explora el silencio entre las formas y la piel.",
-    tags: ["8 piezas únicas", "Hecho a medida"],
-  },
-  {
-    id: "c3", num: "03", title: "Nuit", subtitle: "Gala · Couture", price: 5800,
-    img: media.collection3,
-    desc: "La noche como escenario. Negros profundos, lentejuelas tejidas a mano y volúmenes que desafían la gravedad.",
-    tags: ["6 piezas", "Pasarela exclusiva"],
-  },
-];
+import { useT, t } from "../i18n";
 
 export default function Collection() {
+  const t = useT();
+  const collections = [
+    {
+      id: "c1", num: "01", title: "Lumière", subtitle: t("collection.c1.subtitle"), price: 3400,
+      img: media.collection1,
+      desc: t("collection.c1.desc"),
+      tags: [t("collection.c1.tag1"), t("collection.c1.tag2")],
+    },
+    {
+      id: "c2", num: "02", title: "Écho", subtitle: t("collection.c2.subtitle"), price: 4200,
+      img: media.collection2,
+      desc: t("collection.c2.desc"),
+      tags: [t("collection.c2.tag1"), t("collection.c2.tag2")],
+    },
+    {
+      id: "c3", num: "03", title: "Nuit", subtitle: t("collection.c3.subtitle"), price: 5800,
+      img: media.collection3,
+      desc: t("collection.c3.desc"),
+      tags: [t("collection.c3.tag1"), t("collection.c3.tag2")],
+    },
+  ];
   return (
     <section id="collection" className="bg-ink text-bone py-32 md:py-48">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
@@ -35,14 +36,14 @@ export default function Collection() {
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-6">
               <span className="w-12 h-px bg-clay" />
-              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">Las Colecciones</span>
+              <span className="text-[11px] tracking-[0.5em] uppercase text-clay">{t("collection.label")}</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }} className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95]">
-              Tres capítulos<br /><span className="italic font-light text-clay">de una misma historia</span>
+              {t("collection.heading1")}<br /><span className="italic font-light text-clay">{t("collection.heading2")}</span>
             </motion.h2>
           </div>
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, delay: 0.3 }} className="max-w-md text-bone/60 leading-relaxed font-serif text-lg">
-            Cada colección nace de un archivo, de una emoción, de un viaje. Piezas únicas que trascienden la temporada.
+            {t("collection.desc")}
           </motion.p>
         </div>
 
@@ -54,7 +55,7 @@ export default function Collection() {
   );
 }
 
-function CollectionItem({ item, index }: { item: typeof collections[number]; index: number }) {
+function CollectionItem({ item, index }: { item: { id: string; num: string; title: string; subtitle: string; price: number; img: string; desc: string; tags: string[] }; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
@@ -117,11 +118,11 @@ function CollectionItem({ item, index }: { item: typeof collections[number]; ind
           <div className="mt-12 flex flex-wrap items-center gap-4">
             <button onClick={() => addItem({ id: item.id, name: item.title, price: item.price, image: item.img })}
               className="btn-fill inline-flex items-center gap-3 bg-bone text-ink px-8 py-4 text-[11px] tracking-[0.3em] uppercase transition-colors" data-cursor-hover>
-              Añadir a la bolsa
+              {t("collection.add")}
             </button>
             <button onClick={() => setQuickOpen(true)}
               className="inline-flex items-center border border-bone/30 px-6 py-4 text-[10px] tracking-[0.2em] uppercase text-bone hover:bg-bone/10 transition-colors" data-cursor-hover>
-              Vista rápida
+              {t("collection.quickview")}
             </button>
             <button onClick={() => toggleItem({ id: item.id, name: item.title, price: item.price, image: item.img })}
               className={`p-4 border transition-colors ${inWishlist ? "bg-clay/20 border-clay text-clay" : "border-bone/30 text-bone/60 hover:text-clay hover:border-clay"}`} data-cursor-hover>

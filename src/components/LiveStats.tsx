@@ -1,6 +1,7 @@
 import { motion, useInView, animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Globe, Sparkles, Users, Award } from "lucide-react";
+import { useT, t } from "../i18n";
 
 interface Stat {
   Icon: typeof Globe;
@@ -9,13 +10,6 @@ interface Stat {
   label: string;
   decimals?: number;
 }
-
-const stats: Stat[] = [
-  { Icon: Users, value: 2847, suffix: "", label: "Clientes privados" },
-  { Icon: Sparkles, value: 18420, suffix: "", label: "Piezas entregadas" },
-  { Icon: Globe, value: 23, suffix: "", label: "Países servidos" },
-  { Icon: Award, value: 47, suffix: "", label: "Premios internacionales" },
-];
 
 function Counter({ value, decimals = 0 }: { value: number; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -38,6 +32,13 @@ function Counter({ value, decimals = 0 }: { value: number; decimals?: number }) 
 }
 
 export default function LiveStats() {
+  const t = useT();
+  const stats: Stat[] = [
+    { Icon: Users, value: 2847, suffix: "", label: t("livestats.stat1") },
+    { Icon: Sparkles, value: 18420, suffix: "", label: t("livestats.stat2") },
+    { Icon: Globe, value: 23, suffix: "", label: t("livestats.stat3") },
+    { Icon: Award, value: 47, suffix: "", label: t("livestats.stat4") },
+  ];
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -57,15 +58,15 @@ export default function LiveStats() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-clay opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-clay"></span>
               </span>
-              <span className="text-[10px] tracking-[0.4em] uppercase text-clay">En vivo · Maison</span>
+              <span className="text-[10px] tracking-[0.4em] uppercase text-clay">{t("livestats.label")}</span>
             </motion.div>
             <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="font-display text-3xl md:text-5xl leading-tight">
-              Lo que hacemos,<br /><span className="italic text-clay">medido en tiempo real.</span>
+              {t("livestats.heading1")}<br /><span className="italic text-clay">{t("livestats.heading2")}</span>
             </motion.h3>
           </div>
           <div className="text-[10px] tracking-[0.3em] uppercase text-ink/50 flex items-center gap-3">
             <span className="w-8 h-px bg-clay" />
-            París · {parisTime}
+            {t("livestats.clock")} · {parisTime}
           </div>
         </div>
 

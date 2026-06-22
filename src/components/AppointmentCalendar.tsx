@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, Calendar, Clock } from "lucide-react";
 import { useAppointmentStore, timeSlots, services, getMinDate, getMaxDate } from "../store/appointmentStore";
+import { useT } from "../i18n";
 
 export default function AppointmentCalendar() {
+  const t = useT();
   const { form, isOpen, booked, set, toggle, reset, submit } = useAppointmentStore();
 
   const canBook = form.date && form.time && form.name.length > 2 && form.email.includes("@") && form.phone.length > 5;
@@ -22,9 +24,9 @@ export default function AppointmentCalendar() {
 
             <div className="flex items-center justify-between p-6 border-b border-bone/10 shrink-0">
               <h2 className="font-display text-xl tracking-[0.2em] text-bone uppercase flex items-center gap-3">
-                <Calendar size={18} strokeWidth={1.5} /> Reservar Cita
+                <Calendar size={18} strokeWidth={1.5} /> {t("appt.title")}
               </h2>
-              <button onClick={handleClose} className="p-1 text-bone/60 hover:text-bone transition-colors" aria-label="Cerrar">
+              <button onClick={handleClose} className="p-1 text-bone/60 hover:text-bone transition-colors" aria-label={t("appt.close")}>
                 <X size={22} strokeWidth={1.5} />
               </button>
             </div>
@@ -35,28 +37,28 @@ export default function AppointmentCalendar() {
                   <div className="w-16 h-16 rounded-full bg-bone flex items-center justify-center mb-6">
                     <Check size={28} strokeWidth={2.5} className="text-ink" />
                   </div>
-                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">Cita Confirmada</h3>
+                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">{t("appt.confirmed")}</h3>
                   <div className="flex items-center gap-2 text-clay text-sm mb-4">
                     <Calendar size={14} /> {form.date} <Clock size={14} /> {form.time}
                   </div>
-                  <p className="font-serif italic text-lg text-bone/60 mb-2">Tu cita está reservada en nuestro atelier.</p>
-                  <p className="text-xs text-bone/40 max-w-xs">Recibirás un correo de confirmación. Si necesitas cancelar, contáctanos con 48h de antelación.</p>
+                  <p className="font-serif italic text-lg text-bone/60 mb-2">{t("appt.confirmed.msg")}</p>
+                  <p className="text-xs text-bone/40 max-w-xs">{t("appt.confirmed.note")}</p>
                   <button onClick={handleClose}
                     className="mt-8 border border-bone/40 px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors">
-                    Cerrar
+                    {t("appt.close")}
                   </button>
                 </div>
               ) : (
                 <>
                   {/* Service */}
                   <div>
-                    <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">Tipo de servicio</label>
+                    <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">{t("appt.service")}</label>
                     <div className="grid grid-cols-2 gap-2">
-                      {services.map((srv) => (
+                      {services.map((srv, idx) => (
                         <button key={srv} onClick={() => set("service", srv)}
                           className={`text-left px-4 py-3 text-xs tracking-[0.1em] border transition-colors ${
                             form.service === srv ? "border-bone bg-bone/10 text-bone" : "border-bone/15 text-bone/60 hover:border-bone/40"}`}>
-                          {srv}
+{t("appt.srv" + (idx + 1))}
                         </button>
                       ))}
                     </div>
@@ -64,7 +66,7 @@ export default function AppointmentCalendar() {
 
                   {/* Date */}
                   <div>
-                    <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Fecha</label>
+                    <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("appt.date")}</label>
                     <input type="date" value={form.date} onChange={(e) => set("date", e.target.value)}
                       min={getMinDate()} max={getMaxDate()}
                       className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors" />
@@ -73,7 +75,7 @@ export default function AppointmentCalendar() {
                   {/* Time slots */}
                   {form.date && (
                     <div>
-                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">Horario</label>
+                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-3 block">{t("appt.time")}</label>
                       <div className="grid grid-cols-4 gap-2">
                         {timeSlots.map((t) => (
                           <button key={t} onClick={() => set("time", t)}
@@ -88,27 +90,27 @@ export default function AppointmentCalendar() {
 
                   {/* Client data */}
                   <div className="border-t border-bone/10 pt-6 space-y-5">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">Tus datos</p>
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("appt.your_data")}</p>
                     {(["name", "email", "phone"] as const).map((k) => (
                       <div key={k}>
-                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{k}</label>
+                        <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t(k)}</label>
                         <input type={k === "email" ? "email" : "text"} value={form[k]}
                           onChange={(e) => set(k, e.target.value)}
                           className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20"
-                          placeholder={k === "email" ? "correo@ejemplo.com" : undefined} />
+                          placeholder={k === "email" ? t("checkout.email_placeholder") : undefined} />
                       </div>
                     ))}
                     <div>
-                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">Notas</label>
+                      <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("appt.notes")}</label>
                       <textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2}
                         className="w-full bg-transparent border border-bone/20 px-4 py-3 text-sm text-bone outline-none focus:border-bone/60 transition-colors placeholder:text-bone/20 resize-none font-serif italic"
-                        placeholder="Preferencias, solicitudes especiales..." />
+                        placeholder={t("appt.notes_placeholder")} />
                     </div>
                   </div>
 
                   <button onClick={submit} disabled={!canBook}
                     className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold mt-4 transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-clay">
-                    Confirmar cita
+                    {t("appt.confirm")}
                   </button>
                 </>
               )}

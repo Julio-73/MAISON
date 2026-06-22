@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { media } from "../config/media";
-import { t, subscribe } from "../i18n";
+import { useT } from "../i18n";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -11,18 +11,12 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const titleOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.3]);
-  const [, forceUpdate] = useState(0);
-
-  useEffect(() => {
-    const unsub = subscribe(() => forceUpdate((n) => n + 1));
-    return unsub;
-  }, []);
-
+  const t = useT();
   const stats = [
-    { n: "37", l: "Años de oficio" },
-    { n: "120", l: "Artesanos" },
-    { n: "1.2k", l: "Horas / pieza" },
-    { n: "100%", l: "Hecho a mano" },
+    { n: "37", l: t("hero.stat1") },
+    { n: "120", l: t("hero.stat2") },
+    { n: "1.2k", l: t("hero.stat3") },
+    { n: "100%", l: t("hero.stat4") },
   ];
 
   return (
@@ -49,7 +43,7 @@ export default function Hero() {
         className="absolute top-32 right-8 md:right-16 z-10 hidden md:block"
       >
         <div className="rotate-90 origin-top-right text-[10px] tracking-[0.5em] uppercase text-bone/60">
-          Collection · Automne · 2026
+          {t("hero.sidetext")}
         </div>
       </motion.div>
 
@@ -63,7 +57,7 @@ export default function Hero() {
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-clay opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-clay"></span>
         </span>
-        En vivo · Atelier 2026
+        {t("hero.live")}
       </motion.div>
 
       <motion.div
