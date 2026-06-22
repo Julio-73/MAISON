@@ -9,6 +9,7 @@ import WishlistDrawer from "./components/WishlistDrawer";
 import CheckoutModal from "./components/CheckoutModal";
 import MadeToMeasure from "./components/MadeToMeasure";
 import AppointmentCalendar from "./components/AppointmentCalendar";
+import ToastContainer from "./components/Toast";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 
@@ -41,6 +42,7 @@ export default function App() {
         <CheckoutModal />
         <MadeToMeasure />
         <AppointmentCalendar />
+        <ToastContainer />
         <Navbar />
         <main id="main-content" tabIndex={-1}>
           <Hero />

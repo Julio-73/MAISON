@@ -8,25 +8,28 @@ import { useCurrency } from "../store/currencyStore";
 import QuickView from "./ui/QuickView";
 import Lightbox from "./ui/Lightbox";
 import { useT, t } from "../i18n";
+import BlurImage from "./BlurImage";
+import { useToastStore } from "../store/toastStore";
 
 interface Product {
   id: string; code: string; name: string; category: string;
-  price: number; img: string; image: string; fabric: string; origin: string;
+  price: number; img: string; image: string; images: string[]; fabric: string; origin: string;
 }
 
 export default function Lookbook() {
   const t = useT();
   const products: Product[] = [
-    { id: "n01", code: "M·N·01", name: t("lookbook.p1.name"), category: "Haute Couture", price: 18500, img: media.pexelsEditorial1, image: media.pexelsEditorial1, fabric: t("lookbook.p1.fabric"), origin: t("lookbook.origin") },
-    { id: "n02", code: "M·N·02", name: t("lookbook.p2.name"), category: "Atelier Privé", price: 12200, img: media.pexelsEditorial3, image: media.pexelsEditorial3, fabric: t("lookbook.p2.fabric"), origin: t("lookbook.origin") },
-    { id: "n03", code: "M·N·03", name: t("lookbook.p3.name"), category: "Gala", price: 24800, img: media.pexelsEditorial8, image: media.pexelsEditorial8, fabric: t("lookbook.p3.fabric"), origin: t("lookbook.origin") },
-    { id: "n04", code: "M·N·04", name: t("lookbook.p4.name"), category: "Sastrería", price: 9800, img: media.pexelsEditorial7, image: media.pexelsEditorial7, fabric: t("lookbook.p4.fabric"), origin: t("lookbook.origin") },
+    { id: "n01", code: "M·N·01", name: t("lookbook.p1.name"), category: "Haute Couture", price: 18500, img: media.pexelsEditorial1, image: media.pexelsEditorial1, images: [media.pexelsEditorial1, media.product1Alt1, media.product1Alt2], fabric: t("lookbook.p1.fabric"), origin: t("lookbook.origin") },
+    { id: "n02", code: "M·N·02", name: t("lookbook.p2.name"), category: "Atelier Privé", price: 12200, img: media.pexelsEditorial3, image: media.pexelsEditorial3, images: [media.pexelsEditorial3, media.product2Alt1, media.product2Alt2], fabric: t("lookbook.p2.fabric"), origin: t("lookbook.origin") },
+    { id: "n03", code: "M·N·03", name: t("lookbook.p3.name"), category: "Gala", price: 24800, img: media.pexelsEditorial8, image: media.pexelsEditorial8, images: [media.pexelsEditorial8, media.product3Alt1, media.product3Alt2], fabric: t("lookbook.p3.fabric"), origin: t("lookbook.origin") },
+    { id: "n04", code: "M·N·04", name: t("lookbook.p4.name"), category: "Sastrería", price: 9800, img: media.pexelsEditorial7, image: media.pexelsEditorial7, images: [media.pexelsEditorial7, media.product4Alt1, media.product4Alt2], fabric: t("lookbook.p4.fabric"), origin: t("lookbook.origin") },
   ];
   const containerRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
   const { has, toggleItem: toggleWish } = useWishlist();
   const format = useCurrency((s) => s.format);
+  const toast = useToastStore((s) => s.add);
   const [quickProduct, setQuickProduct] = useState<Product | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -55,18 +58,18 @@ export default function Lookbook() {
           {products.map((p, i) => (
             <motion.article key={p.id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.1 }} onMouseEnter={() => setHovered(p.id)} onMouseLeave={() => setHovered(null)} className="group" data-cursor-hover>
               <div className="relative aspect-[3/4] overflow-hidden bg-ink/5 mb-5" onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}>
-                <img src={p.img} alt={p.name} loading="lazy" srcSet={srcSet(p.img)} sizes="(max-width: 768px) 50vw, 25vw" className="zoom-img absolute inset-0 w-full h-full object-cover cursor-pointer" />
+                <BlurImage src={p.img} alt={p.name} srcSet={srcSet(p.img)} sizes="(max-width: 768px) 50vw, 25vw" className="zoom-img absolute inset-0 w-full h-full object-cover cursor-pointer" />
                 <div className="absolute top-3 left-3 text-[10px] tracking-[0.3em] uppercase text-bone bg-ink/60 backdrop-blur-sm px-3 py-1.5">{p.code}</div>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: hovered === p.id ? 1 : 0 }} className="absolute inset-0 bg-ink/20 backdrop-blur-[2px] flex items-center justify-center gap-3">
                   <button onClick={(e) => { e.stopPropagation(); setQuickProduct(p); }}
                     className="w-11 h-11 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label={t("lookbook.quickview")}>
                     <Eye size={16} strokeWidth={1.5} />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); addItem({ id: p.id, name: p.name, price: p.price, image: p.img }); }}
+                  <button onClick={(e) => { e.stopPropagation(); addItem({ id: p.id, name: p.name, price: p.price, image: p.img }); toast(t("lookbook.add") + " · " + p.name); }}
                     className="w-11 h-11 rounded-full bg-bone text-ink flex items-center justify-center hover:bg-clay transition-colors" aria-label={t("lookbook.add")}>
                     <Plus size={18} strokeWidth={1.5} />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); toggleWish({ id: p.id, name: p.name, price: p.price, image: p.img }); }}
+                  <button onClick={(e) => { e.stopPropagation(); toggleWish({ id: p.id, name: p.name, price: p.price, image: p.img }); toast(has(p.id) ? t("wishlist.remove") + " · " + p.name : t("wishlist.add") + " · " + p.name); }}
                     className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${has(p.id) ? "bg-clay text-ink" : "bg-bone text-ink hover:bg-clay"}`} aria-label={t("lookbook.wishlist")}>
                     <Heart size={15} strokeWidth={1.5} className={has(p.id) ? "fill-ink" : ""} />
                   </button>

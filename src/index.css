@@ -132,6 +132,14 @@ img {
   -webkit-user-drag: none;
 }
 
+.img-fade-in {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.img-fade-in.loaded {
+  opacity: 1;
+}
+
 .link-line {
   position: relative;
   display: inline-block;

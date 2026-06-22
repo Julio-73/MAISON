@@ -29,6 +29,23 @@ export const media = {
   pexelsEditorial8:
     "https://images.pexels.com/photos/29815908/pexels-photo-29815908.jpeg?auto=compress&cs=tinysrgb&w=1600",
 
+  product1Alt1:
+    "https://images.pexels.com/photos/5585830/pexels-photo-5585830.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product1Alt2:
+    "https://images.pexels.com/photos/5585829/pexels-photo-5585829.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product2Alt1:
+    "https://images.pexels.com/photos/5185567/pexels-photo-5185567.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product2Alt2:
+    "https://images.pexels.com/photos/5185596/pexels-photo-5185596.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product3Alt1:
+    "https://images.pexels.com/photos/1522941/pexels-photo-1522941.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product3Alt2:
+    "https://images.pexels.com/photos/5185597/pexels-photo-5185597.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product4Alt1:
+    "https://images.pexels.com/photos/10356550/pexels-photo-10356550.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  product4Alt2:
+    "https://images.pexels.com/photos/10356537/pexels-photo-10356537.jpeg?auto=compress&cs=tinysrgb&w=1200",
+
   heroVideo:
     "https://videos.pexels.com/video-files/9512046/9512046-uhd_4096_2160_25fps.mp4",
   heroVideoPoster:

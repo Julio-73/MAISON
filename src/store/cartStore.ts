@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface CartItem {
   id: string;
@@ -21,7 +22,9 @@ interface CartState {
   cartTotal: () => number;
 }
 
-export const useCartStore = create<CartState>((set, get) => ({
+export const useCartStore = create<CartState>()(
+  persist(
+    (set, get) => ({
   items: [],
   isOpen: false,
   isCheckoutOpen: false,
@@ -40,4 +43,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   toggleCheckout: () => set((state) => ({ isCheckoutOpen: !state.isCheckoutOpen })),
   clearCart: () => set({ items: [] }),
   cartTotal: () => get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
-}));
+}),
+    { name: "maison-cart" },
+  )
+);
