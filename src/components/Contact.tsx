@@ -65,10 +65,10 @@ export default function Contact() {
                     className="w-full bg-transparent border-b border-bone/20 focus:border-clay outline-none py-2 text-sm tracking-[0.1em] transition-colors appearance-none cursor-pointer"
                     data-cursor-hover
                   >
-                    <option value="Paris" className="bg-ink text-bone">{t("contact.opt1")}</option>
-                    <option value="Milano" className="bg-ink text-bone">{t("contact.opt2")}</option>
-                    <option value="Tokyo" className="bg-ink text-bone">{t("contact.opt3")}</option>
-                    <option value="New York" className="bg-ink text-bone">{t("contact.opt4")}</option>
+                    <option value="Paris" className="bg-ink text-bone">{t("contact.sr1")}</option>
+                    <option value="Milano" className="bg-ink text-bone">{t("contact.sr2")}</option>
+                    <option value="Tokyo" className="bg-ink text-bone">{t("contact.sr3")}</option>
+                    <option value="New York" className="bg-ink text-bone">{t("contact.sr4")}</option>
                   </select>
                 </div>
                 <div>
@@ -97,9 +97,9 @@ export default function Contact() {
                 className="text-center py-16"
               >
                 <div className="text-clay text-5xl mb-6">✦</div>
-                <h3 className="font-display text-3xl mb-4">{t("contact.sent_title")}</h3>
+                <h3 className="font-display text-3xl mb-4">{t("contact.success")}</h3>
                 <p className="font-serif italic text-bone/70 max-w-sm mx-auto">
-                  {t("contact.sent_body_prefix")} {formData.name}. {t("contact.sent_body_suffix")} {formData.showroom}. {t("contact.sent_body_end")}
+                  {t("contact.success.msg").replace("{name}", formData.name).replace("{showroom}", formData.showroom)}
                 </p>
               </motion.div>
             )}
