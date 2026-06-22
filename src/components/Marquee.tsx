@@ -8,8 +8,8 @@ interface MarqueeProps {
 export default function Marquee({ dark = false }: MarqueeProps) {
   const t = useT();
   const items = [
-    t("marquee.item1"), t("marquee.item2"), t("marquee.item3"), t("marquee.item4"),
-    t("marquee.item5"), t("marquee.item6"),
+    t("marquee.1"), t("marquee.2"), t("marquee.3"), t("marquee.4"),
+    t("marquee.5"), t("marquee.6"),
   ];
   return (
     <section className={`relative overflow-hidden py-5 md:py-6 border-y ${

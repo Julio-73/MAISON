@@ -66,7 +66,7 @@ export default function LiveStats() {
           </div>
           <div className="text-[10px] tracking-[0.3em] uppercase text-ink/50 flex items-center gap-3">
             <span className="w-8 h-px bg-clay" />
-            {t("livestats.clock")} · {parisTime}
+            Paris · {parisTime}
           </div>
         </div>
 

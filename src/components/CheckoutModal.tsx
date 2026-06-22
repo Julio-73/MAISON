@@ -17,9 +17,9 @@ export default function CheckoutModal() {
   const update = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const steps: { key: Step; label: string }[] = [
-    { key: "review", label: t("checkout.review") },
-    { key: "shipping", label: t("checkout.shipping") },
-    { key: "payment", label: t("checkout.payment") },
+    { key: "review", label: t("checkout.step1") },
+    { key: "shipping", label: t("checkout.step2") },
+    { key: "payment", label: t("checkout.step3") },
   ];
   const stepIndex = steps.findIndex((s) => s.key === step);
 
@@ -101,7 +101,7 @@ export default function CheckoutModal() {
               {/* Step: Shipping */}
               {step === "shipping" && (
                 <div className="space-y-5">
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.shipping_info")}</p>
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.shipping")}</p>
                   {(["name", "email", "address", "city", "zip"] as const).map((k) => (
                     <div key={k}>
                       <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t(k)}</label>
@@ -112,7 +112,7 @@ export default function CheckoutModal() {
                   ))}
                   <button onClick={() => setStep("payment")}
                     className="btn-fill w-full bg-bone text-ink py-4 text-[11px] tracking-[0.3em] uppercase font-semibold mt-2 hover:bg-clay transition-colors">
-                    {t("checkout.continue_payment")}
+                    {t("checkout.to_payment")}
                   </button>
                 </div>
               )}
@@ -120,7 +120,7 @@ export default function CheckoutModal() {
               {/* Step: Payment */}
               {step === "payment" && (
                 <div className="space-y-5">
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.payment_info")}</p>
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-bone/50">{t("checkout.payment")}</p>
                   <div>
                     <label className="text-[9px] tracking-[0.3em] uppercase text-bone/40 mb-1.5 block">{t("checkout.card")}</label>
                     <input value={form.card} onChange={(e) => update("card", e.target.value)} placeholder="4242 4242 4242 4242"
@@ -155,12 +155,12 @@ export default function CheckoutModal() {
                   <div className="w-16 h-16 rounded-full bg-bone flex items-center justify-center mb-6">
                     <Check size={28} strokeWidth={2.5} className="text-ink" />
                   </div>
-                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">{t("checkout.confirmed_title")}</h3>
-                  <p className="font-serif italic text-lg text-bone/60 mb-2">{t("checkout.confirmed_sub")}</p>
-                  <p className="text-xs text-bone/40 max-w-xs">{t("checkout.confirmed_desc")}</p>
+                  <h3 className="font-display text-3xl tracking-[0.2em] text-bone uppercase mb-3">{t("checkout.confirmed")}</h3>
+                  <p className="font-serif italic text-lg text-bone/60 mb-2">{t("checkout.confirmed.msg")}</p>
+                  <p className="text-xs text-bone/40 max-w-xs">{t("checkout.confirmed.note")}</p>
                   <button onClick={reset}
                     className="mt-8 border border-bone/40 px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-bone hover:bg-bone hover:text-ink transition-colors">
-                    {t("checkout.back")}
+                    {t("checkout.return")}
                   </button>
                 </div>
               )}

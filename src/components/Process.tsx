@@ -6,11 +6,11 @@ import { useT, t } from "../i18n";
 export default function Process() {
   const t = useT();
   const steps = [
-    { num: "01", title: t("process.step1_title"), subtitle: t("process.step1_sub"), desc: t("process.step1_desc"), img: media.pexelsEditorial5 },
-    { num: "02", title: t("process.step2_title"), subtitle: t("process.step2_sub"), desc: t("process.step2_desc"), img: media.pexelsEditorial6 },
-    { num: "03", title: t("process.step3_title"), subtitle: t("process.step3_sub"), desc: t("process.step3_desc"), img: media.pexelsEditorial4 },
-    { num: "04", title: t("process.step4_title"), subtitle: t("process.step4_sub"), desc: t("process.step4_desc"), img: media.pexelsEditorial2 },
-    { num: "05", title: t("process.step5_title"), subtitle: t("process.step5_sub"), desc: t("process.step5_desc"), img: media.pexelsRunway1 },
+    { num: "01", title: t("process.s1.title"), subtitle: t("process.s1.time"), desc: t("process.s1.desc"), img: media.pexelsEditorial5 },
+    { num: "02", title: t("process.s2.title"), subtitle: t("process.s2.time"), desc: t("process.s2.desc"), img: media.pexelsEditorial6 },
+    { num: "03", title: t("process.s3.title"), subtitle: t("process.s3.time"), desc: t("process.s3.desc"), img: media.pexelsEditorial4 },
+    { num: "04", title: t("process.s4.title"), subtitle: t("process.s4.time"), desc: t("process.s4.desc"), img: media.pexelsEditorial2 },
+    { num: "05", title: t("process.s5.title"), subtitle: t("process.s5.time"), desc: t("process.s5.desc"), img: media.pexelsRunway1 },
   ];
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });

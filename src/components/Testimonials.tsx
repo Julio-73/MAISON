@@ -4,9 +4,9 @@ import { useT, t } from "../i18n";
 export default function Testimonials() {
   const t = useT();
   const testimonials = [
-    { quote: t("testimonials.q1"), author: t("testimonials.author1"), role: t("testimonials.role1") },
-    { quote: t("testimonials.q2"), author: t("testimonials.author2"), role: t("testimonials.role2") },
-    { quote: t("testimonials.q3"), author: t("testimonials.author3"), role: t("testimonials.role3") },
+    { quote: t("testimonials.t1"), author: t("testimonials.t1.author"), role: t("testimonials.t1.role") },
+    { quote: t("testimonials.t2"), author: t("testimonials.t2.author"), role: t("testimonials.t2.role") },
+    { quote: t("testimonials.t3"), author: t("testimonials.t3.author"), role: t("testimonials.t3.role") },
   ];
   return (
     <section id="testimonials" className="bg-ink text-bone py-36 md:py-56 border-t border-bone/10">

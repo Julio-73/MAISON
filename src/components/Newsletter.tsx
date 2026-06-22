@@ -52,7 +52,7 @@ export default function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("newsletter.placeholder")}
-              aria-label={t("newsletter.aria_label")}
+              aria-label={t("newsletter.aria")}
               required
               className="w-full bg-transparent border-b border-ink/30 focus:border-clay outline-none py-3 text-sm tracking-[0.1em] placeholder-ink/40"
               data-cursor-hover

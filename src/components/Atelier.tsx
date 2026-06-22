@@ -10,9 +10,9 @@ export default function Atelier() {
     { n: "23", l: t("atelier.stat4") },
   ];
   const pillars = [
-    { title: t("atelier.pillar1_title"), desc: t("atelier.pillar1_desc") },
-    { title: t("atelier.pillar2_title"), desc: t("atelier.pillar2_desc") },
-    { title: t("atelier.pillar3_title"), desc: t("atelier.pillar3_desc") },
+    { title: t("atelier.pillar1"), desc: t("atelier.pillar1.desc") },
+    { title: t("atelier.pillar2"), desc: t("atelier.pillar2.desc") },
+    { title: t("atelier.pillar3"), desc: t("atelier.pillar3.desc") },
   ];
   return (
     <section id="atelier" className="relative bg-bone text-ink py-36 md:py-56 overflow-hidden border-t border-ink/5">

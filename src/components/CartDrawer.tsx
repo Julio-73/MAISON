@@ -58,7 +58,7 @@ export default function CartDrawer() {
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-bone/50 text-center">
                   <span className="text-[10px] tracking-[0.3em] uppercase mb-4">{t("cart.empty")}</span>
-                  <p className="font-serif italic text-lg">{t("cart.empty_sub")}</p>
+                  <p className="font-serif italic text-lg">{t("cart.empty.desc")}</p>
                 </div>
               ) : (
                 items.map((item) => (

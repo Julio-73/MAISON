@@ -5,10 +5,10 @@ import { useT, t } from "../i18n";
 export default function Showrooms() {
   const t = useT();
   const showrooms = [
-    { city: t("showrooms.s1_city"), country: t("showrooms.s1_country"), address: t("showrooms.s1_address"), flag: "🇫🇷", hours: t("showrooms.s1_hours") },
-    { city: t("showrooms.s2_city"), country: t("showrooms.s2_country"), address: t("showrooms.s2_address"), flag: "🇮🇹", hours: t("showrooms.s2_hours") },
-    { city: t("showrooms.s3_city"), country: t("showrooms.s3_country"), address: t("showrooms.s3_address"), flag: "🇯🇵", hours: t("showrooms.s3_hours") },
-    { city: t("showrooms.s4_city"), country: t("showrooms.s4_country"), address: t("showrooms.s4_address"), flag: "🇺🇸", hours: t("showrooms.s4_hours") },
+    { city: t("showrooms.s1.city"), country: t("showrooms.s1.country"), address: t("showrooms.s1.address"), flag: "🇫🇷", hours: t("showrooms.s1.hours") },
+    { city: t("showrooms.s2.city"), country: t("showrooms.s2.country"), address: t("showrooms.s2.address"), flag: "🇮🇹", hours: t("showrooms.s2.hours") },
+    { city: t("showrooms.s3.city"), country: t("showrooms.s3.country"), address: t("showrooms.s3.address"), flag: "🇯🇵", hours: t("showrooms.s3.hours") },
+    { city: t("showrooms.s4.city"), country: t("showrooms.s4.country"), address: t("showrooms.s4.address"), flag: "🇺🇸", hours: t("showrooms.s4.hours") },
   ];
   return (
     <section id="showrooms" className="bg-ink text-bone py-36 md:py-56 border-t border-bone/10">
@@ -38,7 +38,7 @@ export default function Showrooms() {
               </div>
               <div className="mt-3 text-xs opacity-60 font-serif">{s.hours}</div>
               <div className="mt-8 pt-6 border-t border-current/15 flex items-center justify-between">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-60">{t("showrooms.reservar")}</span>
+                <span className="text-[10px] tracking-[0.3em] uppercase opacity-60">{t("showrooms.book")}</span>
                 <span className="text-xl transition-transform duration-500 group-hover:rotate-45">↗</span>
               </div>
             </motion.div>
